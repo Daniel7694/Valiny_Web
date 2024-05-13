@@ -23,13 +23,13 @@ function Inicio() {
     };
 
     // Realizar la solicitud a la API
-    fetch('http://192.168.2.103:3000/api/administradores/authenticate', options)
+    fetch('http://192.168.1.12:3000/api/administradores/authenticate', options)
     .then((response) => response.json())
     .then((data) => {
       // Aquí puedes manejar la respuesta de la API
       if (data.success) {
         // Redirigir al usuario a la página de registros
-        navigate('/registros');
+        navigate('/Menu');
       } else if (data.message) {
         alert(data.message);
       }
@@ -84,7 +84,7 @@ function Inicio() {
           >
             Iniciar sesión
           </button>
-          <h2 className='text-center mt-2'>¿Olvidaste la contraseña?</h2>
+
         </form>
       </div>
     </div>
