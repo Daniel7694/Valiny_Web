@@ -60,6 +60,24 @@ Estudiantes.create = async (estudiantes, result) => {
                 result({ message: 'Estudiante no encontrado' }, null);
             });
         };
+        Estudiantes.getAll = (result) => {
+            const sql = 'SELECT * FROM cfgo_ied.vista_estu'; // Utilizamos la vista Vista_Estu en lugar de la tabla Estudiantes
+            db.query(sql, (err, res) => {
+                if (err) {
+                    console.log('Error al buscar los estudiantes: ', err);
+                    result(err, null);
+                    return;
+                }
+                if (res.length) {
+                    console.log('Estudiantes encontrados: ', res);
+                    result(null, res);
+                    return;
+                }
+                // Si no se encuentra ningún estudiante
+                result({ message: 'No se encontraron estudiantes' }, null);
+            });
+        };
+        
 
         Estudiantes.update = (id, newData, result) => {
             const sql = 'UPDATE Estudiantes SET ? WHERE ID_Estudiante = ?';

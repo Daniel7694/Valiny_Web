@@ -5,4 +5,6 @@ module.exports = (app) => {
     app.get('/api/estudiantes/:id', estudiantesController.getById);
     app.put('/api/estudiantes/:id', estudiantesController.update);
     app.delete('/api/estudiantes/:id', estudiantesController.delete); // Nueva ruta para eliminar un estudiante por su ID
+    app.get('/api/estudiantes', estudiantesController.getAll);
+
 }

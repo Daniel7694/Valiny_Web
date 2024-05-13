@@ -42,6 +42,30 @@ module.exports = {
             });
         });
     },
+
+    getAll(req, res) {
+        Estudiantes.getAll((err, data) => {
+            if (err) {
+                return res.status(500).json({
+                    success: false,
+                    message: 'Hubo un error al buscar los estudiantes',
+                    error: err
+                });
+            }
+            if (!data) {
+                return res.status(404).json({
+                    success: false,
+                    message: 'No se encontraron estudiantes'
+                });
+            }
+            return res.status(200).json({
+                success: true,
+                message: 'Estudiantes encontrados',
+                data: data
+            });
+        });
+    },    
+   
     update(req, res) {
         const estudianteId = req.params.id; // Obtener el ID del estudiante a actualizar
         const newData = req.body; // Obtener los nuevos datos del estudiante desde el cuerpo de la solicitud

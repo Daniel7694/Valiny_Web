@@ -42,6 +42,7 @@ module.exports = {
             });
         });
     },
+
     // Añade esta función a tu controlador de administradores
 authenticate(req, res) {
     const { ID_Admin, password } = req.body;

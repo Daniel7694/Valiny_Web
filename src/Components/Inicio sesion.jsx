@@ -46,6 +46,7 @@ function Inicio() {
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
       <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
       <h2 className="text-2xl text-center font-semibold mb-4 ">DEVIU SYSTEM</h2>
+      <img src="./Valiny.jpg" alt="" />
         <h2 className="text-2xl font-semibold mb-4">¡Bienvenido</h2>
         <h3 className="text-lg font-semibold mb-4">Es un gusto tenerte de vuelta!</h3>
         <form onSubmit={handleSubmit}>
