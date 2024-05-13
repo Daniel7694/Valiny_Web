@@ -3,14 +3,16 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import './App.css';
 import Inicio from './Components/Inicio sesion';
 import Registros from './Components/Registros';
+import Menu from './Components/menú';
 
 
 function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Inicio />} />
+        <Route path="/" element={<Menu />} />
         <Route path="/registros" element={<Registros />} />
+        <Route path="/Inicio" element={<Inicio />} />
       </Routes>
     </Router>
   );
