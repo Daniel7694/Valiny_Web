@@ -3,9 +3,15 @@ import { useNavigate } from 'react-router-dom';
 
 function Menu(){
   const navigate = useNavigate();
+
+
 const handleLogout = () => {
   
   navigate('/');
+};
+const handleCursos = () => {
+  
+  navigate('/Cursos');
 };
 
 
@@ -21,7 +27,7 @@ const handleLogout = () => {
       <button className='w-full'><li className="mt-12 flex items-center p-4 hover:bg-blue-100">
           <i className="material-icons mr-3"></i> Reportes
         </li></button>
-        <button className='w-full'><li className="flex items-center p-4 hover:bg-blue-100">
+        <button  onClick={handleCursos} className='w-full'><li className="flex items-center p-4 hover:bg-blue-100">
         <i className="material-icons mr-3"></i> Cursos
         </li></button>
         <li className="mt-52 flex items-center p-4 hover:bg-blue-200">
