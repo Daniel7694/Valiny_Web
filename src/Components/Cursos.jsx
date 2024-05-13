@@ -1,9 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import { FaBars } from 'react-icons/fa'; // Importa el ícono FaBars
 
 const Cursos = () => {
   const [students, setStudents] = useState([]);
-
+  const navigate = useNavigate();
+  const handleMenu = () => {
+  
+    navigate('/Menu');
+  };
   useEffect(() => {
     const fetchData = async () => {
         try {
@@ -20,6 +26,10 @@ const Cursos = () => {
   return (
     <div className="container mx-auto px-4 sm:px-8">
       <div className="py-8">
+        <div className='flex flex row'>
+        <button onClick={handleMenu} ><FaBars size={40}/></button> {/* Reemplaza "Menu" con el ícono FaBars */}
+      <h2 className='text-5xl text-center mb-5 px-96'>Lista de cursos</h2>
+      </div>
         <div className="-mx-4 sm:-mx-8 px-4 sm:px-8 py-4 overflow-x-auto">
           <div className="inline-block min-w-full shadow rounded-lg overflow-hidden">
             <table className="min-w-full leading-normal">
