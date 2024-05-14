@@ -1,45 +1,49 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-function Inicio() {
+function Inicio({ setToken }) {
   const [usuario, setUsuario] = useState('');
   const [contraseña, setContraseña] = useState(''); 
   const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
+  
     // Datos a enviar
     const data = {
       ID_Admin: usuario,
       password: contraseña,
     };
-
+  
     // Opciones de la solicitud fetch
     const options = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data),
     };
-
+  
     // Realizar la solicitud a la API
     fetch('http://192.168.1.39:3000/api/administradores/authenticate', options)
     .then((response) => response.json())
     .then((data) => {
       // Aquí puedes manejar la respuesta de la API
       if (data.success) {
+        // Guardar el token en el almacenamiento local
+        localStorage.setItem('token', data.token);
+  
+        // Actualizar el estado de la aplicación con el nuevo token
+        setToken(data.token);
+
         // Redirigir al usuario a la página de registros
         navigate('/Menu');
       } else if (data.message) {
         alert(data.message);
       }
     })
-    
     .catch((error) => {
       // Aquí puedes manejar cualquier error que ocurra durante la solicitud
       console.error('Error:', error);
     });
-  
   };
 
   return (

@@ -1,4 +1,5 @@
 const db = require('../config/config');
+const jwt = require('jsonwebtoken');
 
 const Administradores = {};
 
@@ -62,7 +63,11 @@ Administradores.authenticate = (id, password, result) => {
             result(err, null);
         } else if (res.length) {
             console.log('Autenticación exitosa: ', res[0]);
-            result(null, res[0]);
+
+            // Generar un token para el usuario
+            const token = jwt.sign({ id: res[0].Documento }, 'tu_clave_secreta', { expiresIn: '1h' });
+
+            result(null, { ...res[0], token });
         } else {
             // Si no se encuentra ningún administrador con ese ID y contraseña
             result({ message: 'Autenticación fallida' }, null);

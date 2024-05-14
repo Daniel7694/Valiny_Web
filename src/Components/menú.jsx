@@ -1,14 +1,27 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
-function Menu(){
+function Menu({ setToken }){
   const navigate = useNavigate();
 
 
-const handleLogout = () => {
+  const handleLogout = () => {
+    // Borrar el token del almacenamiento local
+    localStorage.removeItem('token');
   
-  navigate('/');
-};
+    // Actualizar el estado de la aplicación
+    setToken(null);
+  
+    // Prevenir la navegación hacia atrás
+    window.history.pushState(null, document.title, window.location.href);
+  
+    window.onpopstate = function(event) {
+      window.history.go(1);
+    };
+    // Redirigir al usuario a la página de inicio de sesión
+    navigate('/');
+  };
+  
 const handleCursos = () => {
   
   navigate('/Cursos');
@@ -25,8 +38,8 @@ const handleReportes = () => {
     <div className="mt-4  w-80 h-screen bg-white border-r font-serif	font-family: ui-serif, Georgia, Cambria, Times New Roman Times, serif">
       <button onClick={handleLogout} className="mt-4 text-blue-500 p-4">Log Out</button>
       <div className="mt-12 p-4 text-center">
-        <p className="font-bold text-lg ">Cristian Lombana</p>
-        <p>Orientador</p>
+        <p className="font-bold text-lg ">Nombre de prueba</p>
+        <p>Rol de prueba</p>
       </div>
       <ul className="mt-8">
       <button onClick={handleReportes} className='w-full'><li className="mt-12 flex items-center p-4 hover:bg-blue-100">
