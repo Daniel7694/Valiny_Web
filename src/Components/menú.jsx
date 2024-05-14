@@ -14,6 +14,11 @@ const handleCursos = () => {
   navigate('/Cursos');
 };
 
+const handleReportes = () => {
+  
+  navigate('/Reportes');
+};
+
 
 
   return (
@@ -24,7 +29,7 @@ const handleCursos = () => {
         <p>Orientador</p>
       </div>
       <ul className="mt-8">
-      <button className='w-full'><li className="mt-12 flex items-center p-4 hover:bg-blue-100">
+      <button onClick={handleReportes} className='w-full'><li className="mt-12 flex items-center p-4 hover:bg-blue-100">
           <i className="material-icons mr-3"></i> Reportes
         </li></button>
         <button  onClick={handleCursos} className='w-full'><li className="flex items-center p-4 hover:bg-blue-100">
