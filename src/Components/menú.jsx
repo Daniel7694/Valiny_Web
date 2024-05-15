@@ -1,5 +1,8 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { TbReportSearch } from "react-icons/tb";
+import { FaBook, FaInfoCircle } from 'react-icons/fa';
+
 
 function Menu({ setToken }){
   const navigate = useNavigate();
@@ -43,13 +46,13 @@ const handleReportes = () => {
       </div>
       <ul className="mt-8">
       <button onClick={handleReportes} className='w-full'><li className="mt-12 flex items-center p-4 hover:bg-blue-100">
-          <i className="material-icons mr-3"></i> Reportes
+          <i className="material-icons mr-3"><TbReportSearch size={20}/></i> Reportes
         </li></button>
         <button  onClick={handleCursos} className='w-full'><li className="flex items-center p-4 hover:bg-blue-100">
-        <i className="material-icons mr-3"></i> Cursos
+        <i className="material-icons mr-3"><FaBook size={20} /></i> Cursos
         </li></button>
         <li className="mt-52 flex items-center p-4 hover:bg-blue-200">
-          <div className="material-icons mr-3"><a href="#">Manual de instrucciones</a></div>
+        <i className="material-icons mr-3"><FaInfoCircle size={20} /></i> <a href="">Manual de instrucciones</a>
         </li>
       </ul>
     </div>
