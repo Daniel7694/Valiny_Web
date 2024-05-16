@@ -1,7 +1,18 @@
-import React from 'react';
-
+import React, { useState } from 'react';
+import { FaBars } from 'react-icons/fa';
+import Menu from './menú'; // Asegúrate de importar el componente Menu correctamente
 
 const Reportes = () => {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const handleMenu = () => {
+    setIsMenuOpen(true);
+  };
+
+  const closeMenu = () => {
+    setIsMenuOpen(false);
+  };
+
   // Datos de ejemplo
   const data = [
     { categoria: 'Asistencia', porcentaje: 5.4054 },
@@ -19,20 +30,24 @@ const Reportes = () => {
     'Daniela Gomez'
   ];
 
-  // Función para obtener un estudiante aleatorio
   const getRandomStudent = () => {
     return students[Math.floor(Math.random() * students.length)];
   };
 
-
   const randomStudents = Array.from({ length: 5 }, () => getRandomStudent());
 
   return (
-    <div style={{ margin: 'auto', marginTop: '20px', width: '80%', display: 'flex' }}>
-      <div style={{ flex: '1', marginRight: '20px' }}>
-        <h1 style={{ fontSize: '24px', fontWeight: 'bold', marginBottom: '20px', color: '#007bff' }}>Reporte Específico</h1>
-        <div style={{ marginBottom: '20px' }}>
-          <h2 style={{ fontSize: '20px', fontWeight: 'bold', marginBottom: '10px' }}>Estadísticas</h2>
+    <div className="relative" style={{ margin: 'auto', marginTop: '20px', width: '80%' }}>
+      {isMenuOpen && <Menu setToken={null} onClose={closeMenu} />}
+      <div className="flex">
+        <button onClick={handleMenu}>
+          <FaBars size={40} />
+        </button>
+        <h1 className="flex-grow text-center text-5xl font-bold mb-5 px-96">Reporte Específico</h1>
+      </div>
+      <div style={{ display: 'flex' }}>
+        <div style={{ flex: '1', marginRight: '20px' }}>
+          <h2 className="text-2xl font-bold mb-5 text-blue-600">Estadísticas</h2>
           <table style={{ width: '100%', borderCollapse: 'collapse', border: '1px solid #007bff' }}>
             <thead style={{ backgroundColor: '#007bff', color: '#fff' }}>
               <tr>

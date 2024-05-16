@@ -7,7 +7,7 @@ import Menu from './Components/menú';
 import Cursos from './Components/Cursos';
 
 function App() {
-  const [token, setToken] = useState(null);
+ /* const [token, setToken] = useState(null);
 
   useEffect(() => {
     // Aquí debes reemplazar 'miToken' con el nombre que le diste a tu token en el almacenamiento local
@@ -17,19 +17,15 @@ function App() {
       setToken(storedToken);
       console.log(token)
     }
-  }, [token]);
+  }, [token]);*/
 
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Inicio setToken={setToken} />} />
-        {token && (
-          <>
+        <Route path="/Menu" element={<Inicio />} />
             <Route path="/Reportes" element={<Reportes />} />
-            <Route path="/Menu" element={<Menu setToken={setToken} />} />
+            <Route path="/" element={<Menu />} />
             <Route path="/Cursos" element={<Cursos />} />
-          </>
-        )}
       </Routes>
     </Router>
   );
