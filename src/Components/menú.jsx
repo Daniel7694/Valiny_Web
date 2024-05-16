@@ -9,6 +9,19 @@ function Menu({ setToken, onClose }) {
   const navigate = useNavigate();
 
   const handleLogout = () => {
+    // Borrar el token del almacenamiento local
+    localStorage.removeItem('token');
+  
+    // Actualizar el estado de la aplicación
+    setToken(null);
+  
+    // Prevenir la navegación hacia atrás
+    window.history.pushState(null, "", window.location.href);
+    window.onpopstate = function(event) {
+      window.history.go(1);
+    };
+  
+    // Redirigir al usuario a la página de inicio de sesión
     navigate('/');
   };
 

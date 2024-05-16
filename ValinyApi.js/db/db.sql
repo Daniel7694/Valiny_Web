@@ -159,24 +159,24 @@ VALUES
 (1022998279, 'SARA', 'ISABELA', NULL, 'SANCHEZ', 'RIVERA', 2, 2, 22, 1022926852, 0),
 (1013140460, 'MARIA', 'ALEJANDRA', NULL, 'SOLANO', 'PERILLA', 2, 2, 22, 1022926852, 0);
 
-CREATE VIEW Vista_Admin AS
-SELECT 
-  A.ID_Admin AS 'Documento',
-  R.Nombre_Rol AS 'Rol',
-  C.Contrasenia AS 'Contraseña',
-  T.Tipo_Documento AS 'Tipo de documento',
-  CONCAT(P_Nombre, ' ', S_Nombre, ' ', T_Nombre, ' ', P_Apellido, ' ', S_Apellido) AS 'Nombre completo',
-  G.Nom_Genero AS 'Genero' 
-FROM Administradores A 
-INNER JOIN Rol R ON R.ID_Rol = A.Rol 
-INNER JOIN Clave C ON C.ID_Clave = A.Clave 
-INNER JOIN T_Documento T ON T.ID_Documento = A.T_Documento 
-INNER JOIN Genero G ON G.ID_Genero = A.Genero;
+  CREATE VIEW Vista_Admin AS
+  SELECT 
+    A.ID_Admin AS 'Documento',
+    R.Nombre_Rol AS 'Rol',
+    C.Contrasenia AS 'Contraseña',
+    T.Tipo_Documento AS 'Tipo de documento',
+    CONCAT(P_Nombre, ' ', S_Nombre, ' ', T_Nombre, ' ', P_Apellido, ' ', S_Apellido) AS 'Nombre completo',
+    G.Nom_Genero AS 'Genero' 
+  FROM Administradores A 
+  INNER JOIN Rol R ON R.ID_Rol = A.Rol 
+  INNER JOIN Clave C ON C.ID_Clave = A.Clave 
+  INNER JOIN T_Documento T ON T.ID_Documento = A.T_Documento 
+  INNER JOIN Genero G ON G.ID_Genero = A.Genero;
 
 CREATE VIEW Vista_Estu AS
 SELECT 
   E.ID_Estudiante AS 'Documento',
-  CONCAT(E.P_Nombre, ' ', E.S_Nombre, ' ', E.P_Apellido, ' ', E.S_Apellido) AS 'Nombre completo',
+  CONCAT(E.P_Nombre, ' ', E.S_Nombre, ' ', E.P_Apellido, ' ', E.S_Apellido) AS 'Nombres',
   G.Nom_Genero AS 'Genero',
   T.Tipo_Documento AS 'Tipo de documento',
   C.Num_Curso AS 'Curso',
