@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
 import { FaBars } from 'react-icons/fa';
 import Menu from './menú'; // Asegúrate de importar el componente Menu correctamente
 
 const Cursos = () => {
   const [students, setStudents] = useState([]);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const navigate = useNavigate();
+  
 
   const handleMenu = () => {
     setIsMenuOpen(true);
