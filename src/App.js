@@ -29,8 +29,8 @@ function App() {
         <Route path="/" element={<Inicio setToken={setToken}/>} />
         {token && (
           <>
-            <Route path="/Reportes" element={<Reportes />} />
-            <Route path="/Cursos" element={<Cursos />} />
+            <Route path="/Reportes" element={<Reportes setToken={setToken} />} />
+            <Route path="/Cursos" element={<Cursos setToken={setToken} />} />
             <Route path="/Menu" element={<Menu setToken={setToken} onClose={closeMenu}  />} />
           </>
         )}

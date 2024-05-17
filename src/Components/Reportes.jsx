@@ -4,7 +4,7 @@ import { PDFDownloadLink } from '@react-pdf/renderer';
 import Menu from './menú'; // Asegúrate de importar el componente Menu correctamente
 import ReportesPdf from './ReportesPdf';
 
-const Reportes = () => {
+const Reportes = ({setToken}) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const fecha = new Date();
@@ -43,7 +43,7 @@ const Reportes = () => {
 
   return (
     <div className="relative" style={{ margin: 'auto', marginTop: '20px', width: '80%' }}>
-      {isMenuOpen && <Menu setToken={null} onClose={closeMenu} />}
+      {isMenuOpen && <Menu setToken={setToken} onClose={closeMenu} />}
       <div className="flex">
         <button onClick={handleMenu}>
           <FaBars size={40} />

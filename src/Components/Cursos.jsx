@@ -12,6 +12,17 @@ const Cursos = () => {
   const fecha = new Date();
   const fechaFormateada = `${fecha.getDate()}-${fecha.getMonth()+1}-${fecha.getFullYear()}`;
 
+  const [token, setToken] = useState(null);
+
+  useEffect(() => {
+    const storedToken = localStorage.getItem('token');
+
+    if (storedToken) {
+      setToken(storedToken);
+      console.log(token)
+    }
+  }, [token]);
+
   const handleMenu = () => {
     setIsMenuOpen(true);
   };
@@ -35,7 +46,7 @@ const Cursos = () => {
 
   return (
     <div className="relative container mx-auto px-4 sm:px-8">
-      {isMenuOpen && <Menu setToken={null} onClose={closeMenu} />}
+      {isMenuOpen && <Menu setToken={setToken} onClose={closeMenu} />}
       <div className="py-8">
         <div className='flex flex-row'>
           <button onClick={handleMenu}>
