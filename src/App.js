@@ -26,14 +26,12 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Inicio setToken={setToken}/>} />
-        {token && (
-          <>
+        <Route path="/Inicio" element={<Inicio setToken={setToken}/>} />
+
             <Route path="/Reportes" element={<Reportes setToken={setToken} />} />
             <Route path="/Cursos" element={<Cursos setToken={setToken} />} />
-            <Route path="/Menu" element={<Menu setToken={setToken} onClose={closeMenu}  />} />
-          </>
-        )}
+            <Route path="/" element={<Menu setToken={setToken} onClose={closeMenu}  />} />
+
       </Routes>
     </Router>
   );

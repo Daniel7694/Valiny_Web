@@ -9,11 +9,12 @@ pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/$
 
 const MyPdfViewer = ({ file }) => {
   const [numPages, setNumPages] = useState(null);
+  const [error, setError] = useState(null);
 
   const onDocumentLoadSuccess = ({ numPages }) => {
     setNumPages(numPages);
   };
-
+try {
   return (
     <div className="pdf-viewer">
       <Document
@@ -32,6 +33,11 @@ const MyPdfViewer = ({ file }) => {
       </Document>
     </div>
   );
+} catch (err) {
+  setError(err);
+  console.error('Error loading PDF:', err);
+  return <div>Error loading PDF: {err.message}</div>;
+}
 };
 
 export default MyPdfViewer;

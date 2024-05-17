@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { FaBars } from 'react-icons/fa';
-import Menu from './menú'; // Asegúrate de importar el componente Menu correctamente
+import Menu from './menú';
 import { PDFDownloadLink } from '@react-pdf/renderer';
 import CursosPdf from './CursosPdf';
 import MyPdfViewer from './MyPdfViewer';
@@ -25,19 +25,6 @@ const Cursos = () => {
     }
   }, [token]);
 
-  const handleMenu = () => {
-    setIsMenuOpen(true);
-  };
-
-  const closeMenu = () => {
-    setIsMenuOpen(false);
-  };
-
-  const handleInstructions = () => {
-    setShowPdf(true);
-    closeMenu();
-  };
-
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -51,13 +38,37 @@ const Cursos = () => {
     fetchData();
   }, []);
 
+  useEffect(() => {
+    return () => {
+    //  setShowPdf(false);
+    };
+  }, []);
+
+  const handleMenu = () => {
+    setIsMenuOpen(true);
+  };
+
+  const closeMenu = () => {
+    setIsMenuOpen(false);
+  //  setShowPdf(false);
+  };
+
+  const handleInstructions = () => {
+    setShowPdf(true);
+    setIsMenuOpen(false); // Cierra el menú cuando se abre el PDF
+    console.log('showPdf:', showPdf);
+  };
+
+  console.log('showPdf:', showPdf); // Agregamos un console.log aquí para verificar el valor de showPdf
+
   if (showPdf) {
+    console.log('showPdf is true'); // Agregamos un console.log aquí para verificar si el bloque condicional se está ejecutando
     return <MyPdfViewer file="/ManualDeInstruccionesValiny.pdf" />;
   }
 
   return (
     <div className="relative container mx-auto px-4 sm:px-8">
-      {isMenuOpen && <Menu setToken={setToken} onClose={closeMenu} onClick={handleInstructions} />}
+  {isMenuOpen && <Menu setToken={setToken} onClose={() => setIsMenuOpen(false)} onInstructionsClick={handleInstructions} />}
       <div className="py-8">
         <div className='flex flex-row'>
           <button onClick={handleMenu}>
