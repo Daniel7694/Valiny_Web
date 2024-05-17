@@ -2,11 +2,15 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { FaBars } from 'react-icons/fa';
 import Menu from './menú'; // Asegúrate de importar el componente Menu correctamente
+import { PDFDownloadLink } from '@react-pdf/renderer';
+import CursosPdf from './CursosPdf';
 
 const Cursos = () => {
   const [students, setStudents] = useState([]);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   
+  const fecha = new Date();
+  const fechaFormateada = `${fecha.getDate()}-${fecha.getMonth()+1}-${fecha.getFullYear()}`;
 
   const handleMenu = () => {
     setIsMenuOpen(true);
@@ -70,6 +74,11 @@ const Cursos = () => {
               </tbody>
             </table>
           </div>
+          <PDFDownloadLink document={<CursosPdf />} fileName={`Registro_de_lista_de_cursos-${fechaFormateada}.pdf`}>
+        {({ blob, url, loading, error }) =>
+          loading ? 'Cargando documento...' : 'Descargar los cursos PDF'
+        }
+      </PDFDownloadLink>
         </div>
       </div>
     </div>

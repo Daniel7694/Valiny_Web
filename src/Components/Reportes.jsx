@@ -1,9 +1,14 @@
 import React, { useState } from 'react';
 import { FaBars } from 'react-icons/fa';
+import { PDFDownloadLink } from '@react-pdf/renderer';
 import Menu from './menú'; // Asegúrate de importar el componente Menu correctamente
+import ReportesPdf from './ReportesPdf';
 
 const Reportes = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const fecha = new Date();
+  const fechaFormateada = `${fecha.getDate()}-${fecha.getMonth()+1}-${fecha.getFullYear()}`;
 
   const handleMenu = () => {
     setIsMenuOpen(true);
@@ -76,6 +81,11 @@ const Reportes = () => {
       </div>
       <div style={{ flex: '1' }}>
       <img src="images/porcentajes.jpg" alt="" style={{ width: '500px', height: '480px' }} />
+      <PDFDownloadLink document={<ReportesPdf />} fileName={`Registro_de_lista_de_reportes-${fechaFormateada}.pdf`}>
+        {({ blob, url, loading, error }) =>
+          loading ? 'Cargando documento...' : 'Descargar los Reportes PDF'
+        }
+      </PDFDownloadLink>
 
       </div>
     </div>
