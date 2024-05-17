@@ -57,7 +57,7 @@ function Menu({ setToken, onClose }) {
               <i className="material-icons mr-3"><FaBook size={20} /></i> Cursos
             </li>
           </button>
-          <li className="mt-52 flex items-center p-4 hover:bg-blue-200">
+          <li className="mt-40 flex items-center p-4 hover:bg-blue-200">
             <i className="material-icons mr-3"><FaInfoCircle size={20} /></i>
             <button onClick={handleInstructions}>Manual de instrucciones</button>
           </li>
