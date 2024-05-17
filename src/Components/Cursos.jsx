@@ -74,11 +74,12 @@ const Cursos = () => {
               </tbody>
             </table>
           </div>
-          <PDFDownloadLink document={<CursosPdf />} fileName={`Registro_de_lista_de_cursos-${fechaFormateada}.pdf`}>
-        {({ blob, url, loading, error }) =>
-          loading ? 'Cargando documento...' : 'Descargar los cursos PDF'
-        }
-      </PDFDownloadLink>
+          <PDFDownloadLink document={<CursosPdf students={students} />} fileName={`Registro_de_lista_de_cursos-${fechaFormateada}.pdf`}>
+  {({ blob, url, loading, error }) =>
+    loading ? 'Cargando documento...' : 'Descargar los cursos PDF'
+  }
+</PDFDownloadLink>
+
         </div>
       </div>
     </div>
