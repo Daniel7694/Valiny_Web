@@ -1,28 +1,21 @@
+// Menu.jsx
 import React, { useState } from 'react';
-import { Document, Page } from 'react-pdf';
 import { useNavigate } from 'react-router-dom';
 import { TbReportSearch } from "react-icons/tb";
 import { FaBook, FaInfoCircle } from 'react-icons/fa';
-
+import MyPdfViewer from './MyPdfViewer'; // Importa el componente MyPdfViewer
 
 function Menu({ setToken, onClose }) {
   const [showPdf, setShowPdf] = useState(false);
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    // Borrar el token del almacenamiento local
     localStorage.removeItem('token');
-  
-    // Actualizar el estado de la aplicación
     setToken(null);
-  
-    // Prevenir la navegación hacia atrás
     window.history.pushState(null, "", window.location.href);
     window.onpopstate = function(event) {
       window.history.go(1);
     };
-  
-    // Redirigir al usuario a la página de inicio de sesión
     navigate('/');
   };
 
@@ -36,15 +29,14 @@ function Menu({ setToken, onClose }) {
     onClose();
   };
 
-    const handleInstructions = () => {
+  const handleInstructions = () => {
     setShowPdf(true);
     onClose();
-    };
+  };
 
-    if (showPdf) {
-      return <MyPdfViewer />;
-    }
-  
+  if (showPdf) {
+    return <MyPdfViewer file="/ManualDeInstruccionesValiny.pdf" />;
+  }
 
   return (
     <div className="fixed inset-0 flex z-50">
@@ -66,25 +58,14 @@ function Menu({ setToken, onClose }) {
             </li>
           </button>
           <li className="mt-52 flex items-center p-4 hover:bg-blue-200">
-      <i className="material-icons mr-3"><FaInfoCircle size={20} /></i> 
-      <button onClick={handleInstructions}>Manual de instrucciones</button>
-    </li>
+            <i className="material-icons mr-3"><FaInfoCircle size={20} /></i>
+            <button onClick={handleInstructions}>Manual de instrucciones</button>
+          </li>
         </ul>
       </div>
       <div className="flex-grow bg-black bg-opacity-50" onClick={onClose}></div>
     </div>
   );
-
-
-
 }
-function MyPdfViewer() {
-  return (
-    <div style={{ width: 600 }}>
-      <Document file="/ManualDeInstruccionesValiny.pdf">
-        <Page pageNumber={1} />
-      </Document>
-    </div>
-  );
-}
+
 export default Menu;

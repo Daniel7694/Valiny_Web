@@ -4,11 +4,13 @@ import { FaBars } from 'react-icons/fa';
 import Menu from './menú'; // Asegúrate de importar el componente Menu correctamente
 import { PDFDownloadLink } from '@react-pdf/renderer';
 import CursosPdf from './CursosPdf';
+import MyPdfViewer from './MyPdfViewer';
 
 const Cursos = () => {
   const [students, setStudents] = useState([]);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  
+  const [showPdf, setShowPdf] = useState(false);
+
   const fecha = new Date();
   const fechaFormateada = `${fecha.getDate()}-${fecha.getMonth()+1}-${fecha.getFullYear()}`;
 
@@ -19,7 +21,7 @@ const Cursos = () => {
 
     if (storedToken) {
       setToken(storedToken);
-      console.log(token)
+      console.log(token);
     }
   }, [token]);
 
@@ -31,10 +33,15 @@ const Cursos = () => {
     setIsMenuOpen(false);
   };
 
+  const handleInstructions = () => {
+    setShowPdf(true);
+    closeMenu();
+  };
+
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('http://192.168.2.103:3000/api/estudiantes');
+        const response = await axios.get('http://192.168.1.15:3000/api/estudiantes');
         setStudents(response.data.data);
       } catch (error) {
         console.error('Error fetching data: ', error);
@@ -44,9 +51,13 @@ const Cursos = () => {
     fetchData();
   }, []);
 
+  if (showPdf) {
+    return <MyPdfViewer file="/ManualDeInstruccionesValiny.pdf" />;
+  }
+
   return (
     <div className="relative container mx-auto px-4 sm:px-8">
-      {isMenuOpen && <Menu setToken={setToken} onClose={closeMenu} />}
+      {isMenuOpen && <Menu setToken={setToken} onClose={closeMenu} onClick={handleInstructions} />}
       <div className="py-8">
         <div className='flex flex-row'>
           <button onClick={handleMenu}>
@@ -86,11 +97,10 @@ const Cursos = () => {
             </table>
           </div>
           <PDFDownloadLink document={<CursosPdf students={students} />} fileName={`Registro_de_lista_de_cursos-${fechaFormateada}.pdf`}>
-  {({ blob, url, loading, error }) =>
-    loading ? 'Cargando documento...' : 'Descargar los cursos PDF'
-  }
-</PDFDownloadLink>
-
+            {({ blob, url, loading, error }) =>
+              loading ? 'Cargando documento...' : 'Descargar los cursos PDF'
+            }
+          </PDFDownloadLink>
         </div>
       </div>
     </div>

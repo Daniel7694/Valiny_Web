@@ -1,11 +1,14 @@
+// Reportes.jsx
 import React, { useState } from 'react';
 import { FaBars } from 'react-icons/fa';
 import { PDFDownloadLink } from '@react-pdf/renderer';
-import Menu from './menú'; // Asegúrate de importar el componente Menu correctamente
+import Menu from './menú';
 import ReportesPdf from './ReportesPdf';
+import MyPdfViewer from './MyPdfViewer';
 
-const Reportes = ({setToken}) => {
+const Reportes = ({ setToken }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [showPdf, setShowPdf] = useState(false);
 
   const fecha = new Date();
   const fechaFormateada = `${fecha.getDate()}-${fecha.getMonth()+1}-${fecha.getFullYear()}`;
@@ -18,7 +21,11 @@ const Reportes = ({setToken}) => {
     setIsMenuOpen(false);
   };
 
-  // Datos de ejemplo
+  /*const handleInstructions = () => {
+    setShowPdf(true);
+    closeMenu();
+  };*/
+
   const data = [
     { categoria: 'Asistencia', porcentaje: 5.4054 },
     { categoria: 'Falla', porcentaje: 94.5946 },
@@ -29,7 +36,7 @@ const Reportes = ({setToken}) => {
 
   const students = [
     'Erik Ricaurte',
-    'Jeampierre niete',
+    'Jeampierre Niete',
     'Cristian Lombana',
     'Heidy Prieto',
     'Daniela Gomez'
@@ -40,6 +47,10 @@ const Reportes = ({setToken}) => {
   };
 
   const randomStudents = Array.from({ length: 5 }, () => getRandomStudent());
+
+  /*if (showPdf) {
+    return <MyPdfViewer file="/ManualDeInstruccionesValiny.pdf" />;
+  }*/
 
   return (
     <div className="relative" style={{ margin: 'auto', marginTop: '20px', width: '80%' }}>
@@ -80,13 +91,10 @@ const Reportes = ({setToken}) => {
         </div>
       </div>
       <div style={{ flex: '1' }}>
-      <img src="images/porcentajes.jpg" alt="" style={{ width: '500px', height: '480px' }} />
-      <PDFDownloadLink document={<ReportesPdf />} fileName={`Registro_de_lista_de_reportes-${fechaFormateada}.pdf`}>
-        {({ blob, url, loading, error }) =>
-          loading ? 'Cargando documento...' : 'Descargar los Reportes PDF'
-        }
-      </PDFDownloadLink>
-
+        <img src="images/porcentajes.jpg" alt="" style={{ width: '500px', height: '480px' }} />
+        <PDFDownloadLink document={<ReportesPdf />} fileName={`Registro_de_lista_de_reportes-${fechaFormateada}.pdf`}>
+          {({ blob, url, loading, error }) => loading ? 'Cargando documento...' : 'Descargar los Reportes PDF'}
+        </PDFDownloadLink>
       </div>
     </div>
   );
