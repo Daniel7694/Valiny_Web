@@ -1,4 +1,3 @@
-// Menu.jsx
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { TbReportSearch } from "react-icons/tb";
@@ -40,7 +39,7 @@ function Menu({ setToken, onClose }) {
 
   return (
     <div className="fixed inset-0 flex z-50">
-      <div className="w-96 h-full bg-white border-r font-serif shadow-lg">
+      <div className="w-96 h-full bg-white border-r font-serif shadow-lg relative"> {/* Agregamos relative */}
         <button onClick={handleLogout} className="mt-4 text-blue-500 p-4">Log Out</button>
         <div className="mt-12 p-4 text-center">
           <p className="font-bold text-lg">Nombre de prueba</p>
@@ -57,11 +56,13 @@ function Menu({ setToken, onClose }) {
               <i className="material-icons mr-3"><FaBook size={20} /></i> Cursos
             </li>
           </button>
-          <li className="mt-40 flex items-center p-4 hover:bg-blue-200">
-            <i className="material-icons mr-3"><FaInfoCircle size={20} /></i>
-            <button onClick={handleInstructions}>Manual de instrucciones</button>
-          </li>
         </ul>
+        <div className="absolute bottom-0 left-0"> {/* Agregamos absolute y bottom-0 */}
+          <button onClick={handleInstructions} className="flex items-center justify-center p-4 hover:bg-blue-200">
+            <i className="material-icons mr-3"><FaInfoCircle size={20} /></i>
+            Manual de instrucciones
+          </button>
+        </div>
       </div>
       <div className="flex-grow bg-black bg-opacity-50" onClick={onClose}></div>
     </div>
