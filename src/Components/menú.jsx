@@ -32,6 +32,12 @@ function Menu({ setToken, onClose, onInstructionsClick }) {
     setShowPdf(true);
     onClose();
   };
+  const imgHandler = onInstructionsClick ? onInstructionsClick : (
+    <img 
+      className='w-full h-full mb-4 mx-auto my-auto opacity-50'  
+      src="/colegio.jpg" 
+      alt="Imagen por defecto" 
+    />  );
 
   // Si no se proporciona onInstructionsClick, se utiliza handleInstructions
   const instructionsHandler = onInstructionsClick ? onInstructionsClick : handleInstructions;
@@ -67,7 +73,10 @@ function Menu({ setToken, onClose, onInstructionsClick }) {
           </button>
         </div>
       </div>
-      <div className="flex-grow bg-black bg-opacity-50" onClick={onClose}></div>
+      <div 
+      
+      className="flex-grow bg-black bg-opacity-50" onClick={onClose}>{imgHandler}</div>
+      
     </div>
   );
 }
