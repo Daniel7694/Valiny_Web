@@ -1,7 +1,6 @@
-// Menu.jsx
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { FaInfoCircle } from 'react-icons/fa';
+import { FaInfoCircle, FaBookReader, FaRegListAlt } from 'react-icons/fa';
 import MyPdfViewer from './MyPdfViewer'; // Importa el componente MyPdfViewer
 
 function Menu({ setToken, onClose, onInstructionsClick }) {
@@ -57,18 +56,20 @@ function Menu({ setToken, onClose, onInstructionsClick }) {
         <ul className="mt-8">
           <button onClick={handleReportes} className='w-full'>
             <li className="mt-12 flex items-center p-4 hover:bg-blue-100">
-              Reportes
+              <FaRegListAlt size={20} color="#3B82F6" />
+              <span className="ml-2">Reportes</span>
             </li>
           </button>
           <button onClick={handleCursos} className='w-full'>
             <li className="flex items-center p-4 hover:bg-blue-100">
-              Cursos
+              <FaBookReader size={20} color="#3B82F6" />
+              <span className="ml-2">Cursos</span>
             </li>
           </button>
         </ul>
         <div className="absolute bottom-0 left-0 ">
           <button onClick={instructionsHandler} className="flex items-center justify-center p-4 hover:bg-blue-200 w-full">
-            <FaInfoCircle size={20} />
+            <FaInfoCircle size={20} color="#3B82F6" />
             <span className="ml-2">Manual de instrucciones</span>
           </button>
         </div>
