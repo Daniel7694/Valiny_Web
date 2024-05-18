@@ -6,9 +6,12 @@ const styles = StyleSheet.create({
   section: { margin: 10, padding: 10, flexGrow: 1 },
   header: { fontSize: 24, marginBottom: 10 },
   subheader: { fontSize: 18, marginBottom: 5 },
-  text: { fontSize: 14, marginBottom: 10 },
-  row: { flexDirection: 'row', borderBottomWidth: 1, borderBottomColor: '#000', borderBottomStyle: 'solid', alignItems: 'stretch' },
-  cell: { flexGrow: 1 }
+  table: { display: "table", width: "auto", borderStyle: "solid", borderWidth: 1, borderRightWidth: 0, borderBottomWidth: 0 },
+  tableRow: { margin: "auto", flexDirection: "row" },
+  tableColHeader: { width: "25%", borderStyle: "solid", borderWidth: 1, borderLeftWidth: 0, borderTopWidth: 0 },
+  tableCol: { width: "25%", borderStyle: "solid", borderWidth: 1, borderLeftWidth: 0, borderTopWidth: 0 },
+  tableCellHeader: { margin: "auto", marginTop: 5, fontSize: 12, fontWeight: "bold" },
+  tableCell: { margin: "auto", marginTop: 5, fontSize: 10 }
 });
 
 const CursosPdf = ({ students }) => {
@@ -21,20 +24,39 @@ const CursosPdf = ({ students }) => {
         <View style={styles.section}>
           <Text style={styles.header}>Lista de Cursos</Text>
           <Text style={styles.subheader}>Fecha: {fechaFormateada}</Text>
-          <View style={styles.row}>
-            <Text style={styles.cell}>Número</Text>
-            <Text style={styles.cell}>Documento</Text>
-            <Text style={styles.cell}>Nombres</Text>
-            <Text style={styles.cell}>Registro de Asistencia</Text>
-          </View>
-          {students.map((student, index) => (
-            <View key={student.Documento} style={styles.row}>
-              <Text style={[styles.cell, styles.text]}>{index + 1}</Text>
-              <Text style={[styles.cell, styles.text]}>{student.Documento}</Text>
-              <Text style={[styles.cell, styles.text]}>{student['Nombre completo']}</Text>
-              <Text style={[styles.cell, styles.text]}>{student.Registro}</Text>
+          <View style={styles.table}>
+            <View style={styles.tableRow}>
+              <View style={styles.tableColHeader}>
+                <Text style={styles.tableCellHeader}>Número</Text>
+              </View>
+              <View style={styles.tableColHeader}>
+                <Text style={styles.tableCellHeader}>Documento</Text>
+              </View>
+              <View style={styles.tableColHeader}>
+                <Text style={styles.tableCellHeader}>Nombres</Text>
+              </View>
+              <View style={styles.tableColHeader}>
+                <Text style={styles.tableCellHeader}>Registro de Asistencia</Text>
+              </View>
             </View>
-          ))}
+
+            {students.map((student, index) => (
+              <View style={styles.tableRow} key={student.Documento}>
+                <View style={styles.tableCol}>
+                  <Text style={styles.tableCell}>{index + 1}</Text>
+                </View>
+                <View style={styles.tableCol}>
+                  <Text style={styles.tableCell}>{student.Documento}</Text>
+                </View>
+                <View style={styles.tableCol}>
+                  <Text style={styles.tableCell}>{student['Nombre completo']}</Text>
+                </View>
+                <View style={styles.tableCol}>
+                  <Text style={styles.tableCell}>{student.Registro}</Text>
+                </View>
+              </View>
+            ))}
+          </View>
         </View>
       </Page>
     </Document>

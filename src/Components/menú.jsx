@@ -46,8 +46,8 @@ function Menu({ setToken, onClose, onInstructionsClick }) {
   }
 
   return (
-    <div className="fixed inset-0 flex z-50">
-      <div className="w-96 h-full bg-white border-r font-serif shadow-lg relative">
+    <div className="fixed inset-0 flex z-50 rounded-md">
+      <div className="w-96 h-full bg-white rounded-md font-serif shadow-lg relative">
         <button onClick={handleLogout} className="mt-4 text-blue-500 p-4">Log Out</button>
         <div className="mt-12 p-4 text-center">
           <p className="font-bold text-lg">Nombre de prueba</p>
