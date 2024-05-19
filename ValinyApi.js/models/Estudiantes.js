@@ -77,6 +77,23 @@ Estudiantes.create = async (estudiantes, result) => {
                 result({ message: 'No se encontraron estudiantes' }, null);
             });
         };
+        Estudiantes.getPorcentajeRegistros = (result) => {
+            const sql = 'SELECT * FROM cfgo_ied.vista_porcentaje_registros'; // Utilizamos la vista vista_porcentaje_registros
+            db.query(sql, (err, res) => {
+                if (err) {
+                    console.log('Error al buscar los registros: ', err);
+                    result(err, null);
+                    return;
+                }
+                if (res.length) {
+                    console.log('Registros encontrados: ', res);
+                    result(null, res);
+                    return;
+                }
+                // Si no se encuentra ningún registro
+                result({ message: 'No se encontraron registros' }, null);
+            });
+        };
         
 
         Estudiantes.update = (id, newData, result) => {

@@ -86,6 +86,32 @@ module.exports = {
         });
     },
 
+        getPorcentajeRegistros(req, res) {
+            Estudiantes.getPorcentajeRegistros((err, data) => {
+                if (err) {
+                    console.error(err); // Imprimir el error completo
+                    return res.status(500).json({
+                        success: false,
+                        message: 'Hubo un error al buscar los registros',
+                        error: err
+                    });
+                }
+                if (!data) {
+                    return res.status(404).json({
+                        success: false,
+                        message: 'No se encontraron registros'
+                    });
+                }
+                return res.status(200).json({
+                    success: true,
+                    message: 'Registros encontrados',
+                    data: data
+                });
+            });
+        },
+    
+    
+
     delete(req, res) {
         const estudianteId = req.params.id; // Obtener el ID del estudiante a eliminar
 
