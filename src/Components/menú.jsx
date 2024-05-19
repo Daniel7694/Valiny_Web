@@ -8,7 +8,7 @@ function Menu({ setToken, onClose, onInstructionsClick }) {
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    localStorage.removeItem('token');
+    localStorage.removeItem('token'); 
     setToken(null);
     window.history.pushState(null, "", window.location.href);
     window.onpopstate = function(event) {

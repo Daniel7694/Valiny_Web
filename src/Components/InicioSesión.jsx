@@ -1,10 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { UserContext } from '../App'; // Importa el contexto
 
 function Inicio({ setToken }) {
   const [usuario, setUsuario] = useState('');
   const [contraseña, setContraseña] = useState(''); 
   const navigate = useNavigate();
+  const { setUserData } = useContext(UserContext); // Usa el contexto
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -23,7 +25,7 @@ function Inicio({ setToken }) {
     };
   
     // Realizar la solicitud a la API
-    fetch('http://192.168.1.15:3000/api/administradores/authenticate', options)
+    fetch('http://192.168.1.39:3000/api/administradores/authenticate', options)
     .then((response) => response.json())
     .then((data) => {
       // Aquí puedes manejar la respuesta de la API
@@ -33,6 +35,12 @@ function Inicio({ setToken }) {
   
         // Actualizar el estado de la aplicación con el nuevo token
         setToken(data.token);
+
+        // Actualizar los datos del usuario
+        setUserData({
+          ID_Admin: usuario,
+          password: contraseña,
+        });
 
         // Redirigir al usuario a la página de registros
         navigate('/Menu');
