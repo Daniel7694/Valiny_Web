@@ -50,8 +50,8 @@ function Menu({ setToken, onClose, onInstructionsClick }) {
       <div className="w-96 h-full bg-white rounded-md font-serif shadow-lg relative">
         <button onClick={handleLogout} className="mt-4 text-blue-500 p-4">Log Out</button>
         <div className="mt-12 p-4 text-center">
-          <p className="font-bold text-lg">Nombre de prueba</p>
-          <p>Rol de prueba</p>
+          <p className="font-bold text-lg">Página Web Valiny</p>
+          <p>La mejor experiencia</p>
         </div>
         <ul className="mt-8">
           <button onClick={handleReportes} className='w-full'>
