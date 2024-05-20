@@ -6,6 +6,7 @@ import Menu from './menú';
 import { PDFDownloadLink } from '@react-pdf/renderer';
 import ReportesPdf from './ReportesPdf';
 import MyPdfViewer from './MyPdfViewer';
+import { useNavigate } from 'react-router-dom';
 
 const Reportes = () => {
   const [students, setStudents] = useState([]);
@@ -13,10 +14,15 @@ const Reportes = () => {
   const [showPdf, setShowPdf] = useState(false);
   const barSvgRef = useRef();
   const donutSvgRef = useRef();
+  const navigate = useNavigate();
 
   const fecha = new Date();
   const fechaFormateada = `${fecha.getDate()}-${fecha.getMonth() + 1}-${fecha.getFullYear()}`;
 
+
+  const handleEspecificos = () => {
+    navigate('/ReporteEspecifico');
+  };
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -51,7 +57,7 @@ const Reportes = () => {
       { name: 'Falla', value: data[0].Porcentaje_Falla },
       { name: 'Retardo', value: data[0].Porcentaje_Retardo },
       { name: 'Evasion', value: data[0].Porcentaje_Evasion },
-      { name: 'Falla Justificada', value: data[0].Porcentaje_Falla_Justificada },
+      { name: 'Falla Just.', value: data[0].Porcentaje_Falla_Justificada },
     ];
 
     const barWidth = 300;
@@ -227,12 +233,21 @@ const Reportes = () => {
                 ))}
               </tbody>
             </table>
+            
           </div>
+          <button
+            className="bg-blue-200 hover:bg-blue-300 text-gray-600 font-semibold py-2 px-4 rounded"
+            onClick={handleEspecificos}
+          >
+            Reporte Específico
+          </button>
+   <br/>
           <PDFDownloadLink document={<ReportesPdf students={students} />} fileName={`Registro_de_lista_de_reportes-${fechaFormateada}.pdf`}>
             {({ blob, url, loading, error }) =>
               loading ? 'Cargando documento...' : 'Descargar los Reportes PDF'
             }
           </PDFDownloadLink>
+          
         </div>
       </div>
       <div className="flex justify-around mt-5">
