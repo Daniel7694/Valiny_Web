@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import axios from 'axios';
+import * as d3 from 'd3';
 import { FaBars } from 'react-icons/fa';
 import Menu from './menú';
 import { PDFDownloadLink } from '@react-pdf/renderer';
@@ -10,6 +11,8 @@ const Reportes = () => {
   const [students, setStudents] = useState([]);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [showPdf, setShowPdf] = useState(false);
+  const barSvgRef = useRef();
+  const donutSvgRef = useRef();
 
   const fecha = new Date();
   const fechaFormateada = `${fecha.getDate()}-${fecha.getMonth() + 1}-${fecha.getFullYear()}`;
@@ -19,6 +22,8 @@ const Reportes = () => {
       try {
         const response = await axios.get('http://192.168.20.23:3000/api/porcentajes/porcentaje_registros');
         setStudents(response.data.data);
+        renderBarChart(response.data.data);
+        renderDonutChart(response.data.data);
       } catch (error) {
         console.error('Error fetching data: ', error);
       }
@@ -40,6 +45,118 @@ const Reportes = () => {
     setIsMenuOpen(false);
   };
 
+  const renderBarChart = (data) => {
+    const barData = [
+      { name: 'Asistencia', value: data[0].Porcentaje_Asistencia },
+      { name: 'Falla', value: data[0].Porcentaje_Falla },
+      { name: 'Retardo', value: data[0].Porcentaje_Retardo },
+      { name: 'Evasion', value: data[0].Porcentaje_Evasion },
+      { name: 'Falla Justificada', value: data[0].Porcentaje_Falla_Justificada },
+    ];
+
+    const barWidth = 300;
+    const barHeight = 200;
+    const barMargin = { top: 20, right: 20, bottom: 30, left: 40 };
+
+    const x = d3.scaleBand()
+      .domain(barData.map(d => d.name))
+      .range([barMargin.left, barWidth - barMargin.right])
+      .padding(0.1);
+
+    const y = d3.scaleLinear()
+      .domain([0, d3.max(barData, d => d.value)]).nice()
+      .range([barHeight - barMargin.bottom, barMargin.top]);
+
+    const barSvg = d3.select(barSvgRef.current)
+      .attr('width', barWidth)
+      .attr('height', barHeight)
+      .attr('viewBox', `0 0 ${barWidth} ${barHeight}`)
+      .attr('style', 'max-width: 100%; height: auto; height: intrinsic;');
+
+    barSvg.selectAll('*').remove();
+
+    barSvg.append('g')
+      .selectAll('rect')
+      .data(barData)
+      .join('rect')
+      .attr('x', d => x(d.name))
+      .attr('y', d => y(d.value))
+      .attr('height', d => y(0) - y(d.value))
+      .attr('width', x.bandwidth())
+      .attr('fill', '#3182ce'); // Color de las barras
+
+    barSvg.append('g')
+      .attr('transform', `translate(0,${barHeight - barMargin.bottom})`)
+      .call(d3.axisBottom(x).tickSizeOuter(0));
+
+    barSvg.append('g')
+      .attr('transform', `translate(${barMargin.left},0)`)
+      .call(d3.axisLeft(y));
+  };
+
+  const renderDonutChart = (data) => {
+    const donutData = [
+      { name: 'Asistencia', value: data[0].Porcentaje_Asistencia },
+      { name: 'Falla', value: data[0].Porcentaje_Falla },
+      { name: 'Retardo', value: data[0].Porcentaje_Retardo },
+      { name: 'Evasion', value: data[0].Porcentaje_Evasion },
+      { name: 'Falla Justificada', value: data[0].Porcentaje_Falla_Justificada },
+    ];
+
+    const donutWidth = 200;
+    const donutHeight = 200;
+    const radius = Math.min(donutWidth, donutHeight) / 2;
+
+    const color = d3.scaleOrdinal()
+      .domain(donutData.map(d => d.name))
+      .range(['#3182ce', '#90cdf4', '#63b3ed', '#4299e1', '#2b6cb0']); // Colores de las secciones de la dona
+
+    const pie = d3.pie()
+      .sort(null)
+      .value(d => d.value);
+
+    const arc = d3.arc()
+      .innerRadius(radius * 0.5)
+      .outerRadius(radius * 0.8);
+
+    const outerArc = d3.arc()
+      .innerRadius(radius * 0.9)
+      .outerRadius(radius * 0.9);
+
+    const donutSvg = d3.select(donutSvgRef.current)
+      .attr('width', donutWidth)
+      .attr('height', donutHeight)
+      .append('g')
+      .attr('transform', `translate(${donutWidth / 2},${donutHeight / 2})`);
+
+    donutSvg.selectAll('*').remove();
+
+    const slices = donutSvg.selectAll('path.slice')
+      .data(pie(donutData))
+      .enter().append('path')
+      .attr('class', 'slice')
+      .attr('d', arc)
+      .attr('fill', d => color(d.data.name));
+
+    donutSvg.selectAll('text')
+      .data(pie(donutData))
+      .enter().append('text')
+      .attr('dy', '.35em')
+      .attr('transform', function(d) {
+        const pos = outerArc.centroid(d);
+        pos[0] = radius * (midAngle(d) < Math.PI ? 1 : -1);
+        return `translate(${pos})`;
+      })
+      .attr('text-anchor', function(d) {
+        return midAngle(d) < Math.PI ? 'start' : 'end';
+      })
+      .text(d => d.data.name);
+
+    function midAngle(d) {
+      return d.startAngle + (d.endAngle - d.startAngle) / 2;
+    }
+  };
+
   if (showPdf) {
     return <MyPdfViewer file="/ManualDeInstruccionesValiny.pdf" />;
   }
@@ -52,7 +169,7 @@ const Reportes = () => {
           <button onClick={handleMenu}>
             <FaBars size={40} />
           </button>
-          <h2 className='text-5xl text-center mb-5 px-96'>Reportes</h2>
+          <h2 className='text-5xl text-center mb-5 px-96'>Reportes Diarios</h2>
         </div>
         <div className="-mx-4 sm:-mx-8 px-4 sm:px-8 py-4 overflow-x-auto">
           <div className="inline-block min-w-full shadow rounded-lg overflow-hidden">
@@ -99,7 +216,7 @@ const Reportes = () => {
                       <td className="px-5 py-5 border-b border-gray-200 text-sm">{student.Porcentaje_Evasion}</td>
                     </tr>
                     <tr className={index % 2 === 0 ? 'bg-white' : 'bg-blue-200'}>
-                      <td className="px-5 py-5 border-b border-gray-200 text-sm">Falla Justificada</td>
+                      <td className="px-5 py-5 border-b border-gray-200 text-sm">Falla Just</td>
                       <td className="px-5 py-5 border-b border-gray-200 text-sm">{student.Falla_Justificada}</td>
                     </tr>
                     <tr className={index % 2 === 0 ? 'bg-white' : 'bg-blue-200'}>
@@ -117,6 +234,10 @@ const Reportes = () => {
             }
           </PDFDownloadLink>
         </div>
+      </div>
+      <div className="flex justify-around mt-5">
+        <svg ref={barSvgRef}></svg>
+        <svg ref={donutSvgRef}></svg>
       </div>
     </div>
   );
