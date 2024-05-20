@@ -12,7 +12,7 @@ const Reportes = () => {
   const [showPdf, setShowPdf] = useState(false);
 
   const fecha = new Date();
-  const fechaFormateada = `${fecha.getDate()}-${fecha.getMonth()+1}-${fecha.getFullYear()}`;
+  const fechaFormateada = `${fecha.getDate()}-${fecha.getMonth() + 1}-${fecha.getFullYear()}`;
 
   useEffect(() => {
     const fetchData = async () => {
@@ -52,27 +52,61 @@ const Reportes = () => {
           <button onClick={handleMenu}>
             <FaBars size={40} />
           </button>
-          <h2 className='text-5xl text-center mb-5 px-96'>Reporte de Estudiantes</h2>
+          <h2 className='text-5xl text-center mb-5 px-96'>Reportes</h2>
         </div>
         <div className="-mx-4 sm:-mx-8 px-4 sm:px-8 py-4 overflow-x-auto">
           <div className="inline-block min-w-full shadow rounded-lg overflow-hidden">
             <table className="min-w-full leading-normal">
               <thead>
                 <tr>
-                  <th className="px-5 py-3 border-b-2 border-blue-200 bg-blue-200 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Número</th>
-                  <th className="px-5 py-3 border-b-2 border-blue-200 bg-blue-200 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Documento</th>
-                  <th className="px-5 py-3 border-b-2 border-blue-200 bg-blue-200 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Nombres</th>
-                  <th className="px-5 py-3 border-b-2 border-blue-200 bg-blue-200 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Registro de Asistencia</th>
+                  <th className="px-5 py-3 border-b-2 border-blue-200 bg-blue-200 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Propiedad</th>
+                  <th className="px-5 py-3 border-b-2 border-blue-200 bg-blue-200 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Valor</th>
                 </tr>
               </thead>
               <tbody>
                 {students.map((student, index) => (
-                  <tr key={student.Documento} className={index % 2 === 0 ? 'bg-white' : 'bg-blue-200'}>
-                    <td className="px-5 py-5 border-b border-gray-200 text-sm">{index + 1}</td>
-                    <td className="px-5 py-5 border-b border-gray-200 text-sm">{student.Porcentaje_Asistencia}</td>
-                    <td className="px-5 py-5 border-b border-gray-200 text-sm">{student.Falla}</td>
-                    <td className="px-5 py-5 border-b border-gray-200 text-sm">{student.Asistencia}</td>
-                  </tr>
+                  <React.Fragment key={index}>
+                    <tr className={index % 2 === 0 ? 'bg-white' : 'bg-blue-200'}>
+                      <td className="px-5 py-5 border-b border-gray-200 text-sm">Asistencia</td>
+                      <td className="px-5 py-5 border-b border-gray-200 text-sm">{student.Asistencia}</td>
+                    </tr>
+                    <tr className={index % 2 === 0 ? 'bg-white' : 'bg-blue-200'}>
+                      <td className="px-5 py-5 border-b border-gray-200 text-sm">Porcentaje Asistencia</td>
+                      <td className="px-5 py-5 border-b border-gray-200 text-sm">{student.Porcentaje_Asistencia}</td>
+                    </tr>
+                    <tr className={index % 2 === 0 ? 'bg-white' : 'bg-blue-200'}>
+                      <td className="px-5 py-5 border-b border-gray-200 text-sm">Falla</td>
+                      <td className="px-5 py-5 border-b border-gray-200 text-sm">{student.Falla}</td>
+                    </tr>
+                    <tr className={index % 2 === 0 ? 'bg-white' : 'bg-blue-200'}>
+                      <td className="px-5 py-5 border-b border-gray-200 text-sm">Porcentaje Falla</td>
+                      <td className="px-5 py-5 border-b border-gray-200 text-sm">{student.Porcentaje_Falla}</td>
+                    </tr>
+                    <tr className={index % 2 === 0 ? 'bg-white' : 'bg-blue-200'}>
+                      <td className="px-5 py-5 border-b border-gray-200 text-sm">Retardo</td>
+                      <td className="px-5 py-5 border-b border-gray-200 text-sm">{student.Retardo}</td>
+                    </tr>
+                    <tr className={index % 2 === 0 ? 'bg-white' : 'bg-blue-200'}>
+                      <td className="px-5 py-5 border-b border-gray-200 text-sm">Porcentaje Retardo</td>
+                      <td className="px-5 py-5 border-b border-gray-200 text-sm">{student.Porcentaje_Retardo}</td>
+                    </tr>
+                    <tr className={index % 2 === 0 ? 'bg-white' : 'bg-blue-200'}>
+                      <td className="px-5 py-5 border-b border-gray-200 text-sm">Evasion</td>
+                      <td className="px-5 py-5 border-b border-gray-200 text-sm">{student.Evasion}</td>
+                    </tr>
+                    <tr className={index % 2 === 0 ? 'bg-white' : 'bg-blue-200'}>
+                      <td className="px-5 py-5 border-b border-gray-200 text-sm">Porcentaje Evasion</td>
+                      <td className="px-5 py-5 border-b border-gray-200 text-sm">{student.Porcentaje_Evasion}</td>
+                    </tr>
+                    <tr className={index % 2 === 0 ? 'bg-white' : 'bg-blue-200'}>
+                      <td className="px-5 py-5 border-b border-gray-200 text-sm">Falla Justificada</td>
+                      <td className="px-5 py-5 border-b border-gray-200 text-sm">{student.Falla_Justificada}</td>
+                    </tr>
+                    <tr className={index % 2 === 0 ? 'bg-white' : 'bg-blue-200'}>
+                      <td className="px-5 py-5 border-b border-gray-200 text-sm">Porcentaje Falla Justificada</td>
+                      <td className="px-5 py-5 border-b border-gray-200 text-sm">{student.Porcentaje_Falla_Justificada}</td>
+                    </tr>
+                  </React.Fragment>
                 ))}
               </tbody>
             </table>
