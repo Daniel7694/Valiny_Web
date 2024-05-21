@@ -67,11 +67,11 @@ const Reportes = () => {
   };
   const renderBarChart = (data) => {
     const barData = [
-      { name: 'Asistencia', value: data[0].Porcentaje_Asistencia },
-      { name: 'Falla', value: data[0].Porcentaje_Falla },
-      { name: 'Retardo', value: data[0].Porcentaje_Retardo },
-      { name: 'Evasion', value: data[0].Porcentaje_Evasion },
-      { name: 'Falla Just.', value: data[0].Porcentaje_Falla_Justificada },
+      { name: 'Asistencia', value: data[0].Asistencia },
+      { name: 'Falla', value: data[0].Falla },
+      { name: 'Retardo', value: data[0].Retardo },
+      { name: 'Evasion', value: data[0].Evasion },
+      { name: 'Falla Just.', value: data[0].Falla_Justificada },
     ];
 
     const barWidth = 400;
@@ -208,41 +208,23 @@ const Reportes = () => {
                       <td className="px-5 py-5 border-b border-gray-200 text-sm">{student.Asistencia}</td>
                     </tr>
                     <tr className={index % 2 === 0 ? 'bg-white' : 'bg-blue-200'}>
-                      <td className="px-5 py-5 border-b border-gray-200 text-sm">Porcentaje Asistencia</td>
-                      <td className="px-5 py-5 border-b border-gray-200 text-sm">{student.Porcentaje_Asistencia}</td>
-                    </tr>
-                    <tr className={index % 2 === 0 ? 'bg-white' : 'bg-blue-200'}>
                       <td className="px-5 py-5 border-b border-gray-200 text-sm">Falla</td>
                       <td className="px-5 py-5 border-b border-gray-200 text-sm">{student.Falla}</td>
-                    </tr>
-                    <tr className={index % 2 === 0 ? 'bg-white' : 'bg-blue-200'}>
-                      <td className="px-5 py-5 border-b border-gray-200 text-sm">Porcentaje Falla</td>
-                      <td className="px-5 py-5 border-b border-gray-200 text-sm">{student.Porcentaje_Falla}</td>
                     </tr>
                     <tr className={index % 2 === 0 ? 'bg-white' : 'bg-blue-200'}>
                       <td className="px-5 py-5 border-b border-gray-200 text-sm">Retardo</td>
                       <td className="px-5 py-5 border-b border-gray-200 text-sm">{student.Retardo}</td>
                     </tr>
                     <tr className={index % 2 === 0 ? 'bg-white' : 'bg-blue-200'}>
-                      <td className="px-5 py-5 border-b border-gray-200 text-sm">Porcentaje Retardo</td>
-                      <td className="px-5 py-5 border-b border-gray-200 text-sm">{student.Porcentaje_Retardo}</td>
-                    </tr>
-                    <tr className={index % 2 === 0 ? 'bg-white' : 'bg-blue-200'}>
                       <td className="px-5 py-5 border-b border-gray-200 text-sm">Evasion</td>
                       <td className="px-5 py-5 border-b border-gray-200 text-sm">{student.Evasion}</td>
                     </tr>
-                    <tr className={index % 2 === 0 ? 'bg-white' : 'bg-blue-200'}>
-                      <td className="px-5 py-5 border-b border-gray-200 text-sm">Porcentaje Evasion</td>
-                      <td className="px-5 py-5 border-b border-gray-200 text-sm">{student.Porcentaje_Evasion}</td>
-                    </tr>
+  
                     <tr className={index % 2 === 0 ? 'bg-white' : 'bg-blue-200'}>
                       <td className="px-5 py-5 border-b border-gray-200 text-sm">Falla Just</td>
                       <td className="px-5 py-5 border-b border-gray-200 text-sm">{student.Falla_Justificada}</td>
                     </tr>
-                    <tr className={index % 2 === 0 ? 'bg-white' : 'bg-blue-200'}>
-                      <td className="px-5 py-5 border-b border-gray-200 text-sm">Porcentaje Falla Justificada</td>
-                      <td className="px-5 py-5 border-b border-gray-200 text-sm">{student.Porcentaje_Falla_Justificada}</td>
-                    </tr>
+
                   </React.Fragment>
                 ))}
               </tbody>
