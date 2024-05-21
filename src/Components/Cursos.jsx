@@ -116,28 +116,30 @@ const Cursos = () => {
                   <tr key={student.Documento} className={index % 2 === 0 ? 'bg-white' : 'bg-blue-200'}>
                     <td className="px-5 py-5 border-b border-gray-200 text-sm font-family: ui-serif, Georgia, Cambria, Times New Roman Times, serif">{index + 1}</td>
                     <td className="px-5 py-5 border-b border-gray-200 text-sm font-family: ui-serif, Georgia, Cambria, Times New Roman Times, serif">{student.Documento}</td>
-                    <td className="px-5 py-5 border-b border-gray-200 text-sm font-family: ui-serif, Georgia, Cambria, Times New Roman Times, serif">{student['Nombre completo']}</td>
+                    <td className="px-5 py-5 border-b border-gray-200 text-sm font-family: ui-serif, Georgia, Cambria, Times New Roman Times, serif">{student.Nombres}</td>
                     <td className="px-5 py-5 border-b border-gray-200 text-sm font-family: ui-serif, Georgia, Cambria, Times New Roman Times, serif">{student.Registro}</td>
                   </tr>
                 ))}
               </tbody>
             </table>
           </div>
-          
-          <div className="bg-blue-200 hover:bg-blue-300 text-gray-600 font-semibold py-2 px-4 rounded w-64 mt-5 inline-flex items-center">
-  <FaFilePdf />
-  <PDFDownloadLink document={<CursosPdf students={students} />} fileName={`Registro_de_lista_de_cursos-${fechaFormateada}.pdf`}>
-    {({ blob, url, loading, error }) =>
-      loading ? 'Cargando documento...' : 'Descargar los cursos PDF'
-    }
-  </PDFDownloadLink>
+          <h2>Descargar en:</h2>
+          <div className="flex justify-center space-x-10 mt-10">
+  <div className="flex flex-col items-center">
+    <PDFDownloadLink document={<CursosPdf students={students} />} fileName={`Registro_de_lista_de_cursos-${fechaFormateada}.pdf`}>
+      {({ blob, url, loading, error }) =>
+        loading ? 'Cargando documento...' : <FaFilePdf size={50} color="red"/>
+      }
+    </PDFDownloadLink>
+    <span>PDF</span>
+  </div>
+  <div className="flex flex-col items-center">
+    <button onClick={() => exportarAExcel(students, `Lista_de_cursos_${fechaFormateada}`)}>
+      <FaFileExcel size={50} color="green"/>
+    </button>
+    <span>Excel</span>
+  </div>
 </div>
-          <br />
-          <button className="bg-blue-200 hover:bg-blue-300 text-gray-600 font-semibold py-2 px-4 mt-5 rounded inline-flex items-center" onClick={() => exportarAExcel(students, `Lista_de_cursos_${fechaFormateada}`)}>
-  <FaFileExcel />
-  <span>Descargar los cursos Excel</span>
-</button>
-
 
 
         </div>

@@ -49,7 +49,7 @@ const CursosPdf = ({ students }) => {
                   <Text style={styles.tableCell}>{student.Documento}</Text>
                 </View>
                 <View style={styles.tableCol}>
-                  <Text style={styles.tableCell}>{student['Nombre completo']}</Text>
+                  <Text style={styles.tableCell}>{student.Nombres}</Text>
                 </View>
                 <View style={styles.tableCol}>
                   <Text style={styles.tableCell}>{student.Registro}</Text>

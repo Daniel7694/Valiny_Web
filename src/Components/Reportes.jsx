@@ -263,21 +263,24 @@ const Reportes = () => {
         <svg ref={barSvgRef}></svg>
         <svg ref={donutSvgRef}></svg>
       </div>
-      <div className="bg-blue-200 hover:bg-blue-300 text-gray-600 font-semibold py-2 px-4 rounded w-64 mt-5 inline-flex items-center">
-      <FaFilePdf />
-          <PDFDownloadLink document={<ReportesPdf students={students} />} fileName={`Registro_de_lista_de_reportes-${fechaFormateada}.pdf`}>
-            {({ blob, url, loading, error }) =>
-              loading ? 'Cargando documento...' : 'Descargar los Reportes PDF'
-            }
-          </PDFDownloadLink>   
-          </div>
-          <br />
-          <button className="bg-blue-200 hover:bg-blue-300 text-gray-600 font-semibold py-2 px-4 mt-5 rounded inline-flex items-center" onClick={() => exportarAExcel(students, `Reporte_de_cursos_${fechaFormateada}`)}>
-  <FaFileExcel />
-  <span>Descargar los Reportes Excel</span>
-</button>
-
-    </div>
+      <h2>Descargar en:</h2>
+      <div className="flex justify-center space-x-10 mt-10">
+      <div className="flex flex-col items-center">
+    <PDFDownloadLink document={<ReportesPdf students={students} />} fileName={`Reporte_de_lista_de_cursos-${fechaFormateada}.pdf`}>
+      {({ blob, url, loading, error }) =>
+        loading ? 'Cargando documento...' : <FaFilePdf size={50} color="red"/>
+      }
+    </PDFDownloadLink>
+    <span>PDF</span>
+  </div>
+  <div className="flex flex-col items-center">
+    <button onClick={() => exportarAExcel(students, `Reporte_de_cursos_${fechaFormateada}`)}>
+      <FaFileExcel size={50} color="green"/>
+    </button>
+    <span>Excel</span>
+  </div>
+</div>
+</div>
   );
 };
 
