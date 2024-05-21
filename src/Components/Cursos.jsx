@@ -5,6 +5,9 @@ import Menu from './menú';
 import { PDFDownloadLink } from '@react-pdf/renderer';
 import CursosPdf from './CursosPdf';
 import MyPdfViewer from './MyPdfViewer';
+import * as FileSaver from 'file-saver';
+import * as XLSX from 'xlsx';
+
 
 const Cursos = () => {
   const [students, setStudents] = useState([]);
@@ -52,6 +55,17 @@ const Cursos = () => {
     setIsMenuOpen(false);
   //  setShowPdf(false);
   };
+  const exportarAExcel = (datosApi, nombreArchivo) => {
+    const tipoArchivo = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
+    const extensionArchivo = '.xlsx';
+  
+    const hoja = XLSX.utils.json_to_sheet(datosApi);
+    const libro = { Sheets: { 'data': hoja }, SheetNames: ['data'] };
+    const bufferExcel = XLSX.write(libro, { bookType: 'xlsx', type: 'array' });
+    const datos = new Blob([bufferExcel], { type: tipoArchivo });
+    FileSaver.saveAs(datos, nombreArchivo + extensionArchivo);
+  };
+  
 
   const handleInstructions = () => {
     setShowPdf(true);
@@ -107,11 +121,18 @@ const Cursos = () => {
               </tbody>
             </table>
           </div>
+          
+          <div className="bg-blue-200 hover:bg-blue-300 text-gray-600 font-semibold py-2 px-4 rounded w-56 mt-5">
           <PDFDownloadLink document={<CursosPdf students={students} />} fileName={`Registro_de_lista_de_cursos-${fechaFormateada}.pdf`}>
             {({ blob, url, loading, error }) =>
               loading ? 'Cargando documento...' : 'Descargar los cursos PDF'
             }
-          </PDFDownloadLink>
+          </PDFDownloadLink> 
+          </div>
+          <br />
+          <button className="bg-blue-200 hover:bg-blue-300 text-gray-600 font-semibold py-2 px-4 rounded" onClick={() => exportarAExcel(students, `Lista_de_cursos_${fechaFormateada}`)}>Exportar a Excel</button>
+
+
         </div>
       </div>
     </div>

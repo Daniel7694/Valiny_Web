@@ -7,6 +7,8 @@ import { PDFDownloadLink } from '@react-pdf/renderer';
 import ReportesPdf from './ReportesPdf';
 import MyPdfViewer from './MyPdfViewer';
 import { useNavigate } from 'react-router-dom';
+import * as FileSaver from 'file-saver';
+import * as XLSX from 'xlsx';
 
 const Reportes = () => {
   const [students, setStudents] = useState([]);
@@ -51,6 +53,16 @@ const Reportes = () => {
     setIsMenuOpen(false);
   };
 
+  const exportarAExcel = (datosApi, nombreArchivo) => {
+    const tipoArchivo = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
+    const extensionArchivo = '.xlsx';
+  
+    const hoja = XLSX.utils.json_to_sheet(datosApi);
+    const libro = { Sheets: { 'data': hoja }, SheetNames: ['data'] };
+    const bufferExcel = XLSX.write(libro, { bookType: 'xlsx', type: 'array' });
+    const datos = new Blob([bufferExcel], { type: tipoArchivo });
+    FileSaver.saveAs(datos, nombreArchivo + extensionArchivo);
+  };
   const renderBarChart = (data) => {
     const barData = [
       { name: 'Asistencia', value: data[0].Porcentaje_Asistencia },
@@ -242,18 +254,22 @@ const Reportes = () => {
             Reporte Específico
           </button>
    <br/>
-          <PDFDownloadLink document={<ReportesPdf students={students} />} fileName={`Registro_de_lista_de_reportes-${fechaFormateada}.pdf`}>
-            {({ blob, url, loading, error }) =>
-              loading ? 'Cargando documento...' : 'Descargar los Reportes PDF'
-            }
-          </PDFDownloadLink>
-          
+
         </div>
       </div>
       <div className="flex justify-around mt-5">
         <svg ref={barSvgRef}></svg>
         <svg ref={donutSvgRef}></svg>
       </div>
+      <div className="bg-blue-200 hover:bg-blue-300 text-gray-600 font-semibold py-2 px-4 rounded w-64 mt-5">
+          <PDFDownloadLink document={<ReportesPdf students={students} />} fileName={`Registro_de_lista_de_reportes-${fechaFormateada}.pdf`}>
+            {({ blob, url, loading, error }) =>
+              loading ? 'Cargando documento...' : 'Descargar los Reportes PDF'
+            }
+          </PDFDownloadLink>   
+          </div>
+          <br />
+          <button className="bg-blue-200 hover:bg-blue-300 text-gray-600 font-semibold py-2 px-4 rounded" onClick={() => exportarAExcel(students, `Reportes de cursos_${fechaFormateada}`)}>Exportar a Excel</button>
     </div>
   );
 };
