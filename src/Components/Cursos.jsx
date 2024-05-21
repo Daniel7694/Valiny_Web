@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { FaBars } from 'react-icons/fa';
+import { FaFileExcel } from 'react-icons/fa';
+import { FaFilePdf } from 'react-icons/fa';
 import Menu from './menú';
 import { PDFDownloadLink } from '@react-pdf/renderer';
 import CursosPdf from './CursosPdf';
@@ -122,15 +124,20 @@ const Cursos = () => {
             </table>
           </div>
           
-          <div className="bg-blue-200 hover:bg-blue-300 text-gray-600 font-semibold py-2 px-4 rounded w-56 mt-5">
-          <PDFDownloadLink document={<CursosPdf students={students} />} fileName={`Registro_de_lista_de_cursos-${fechaFormateada}.pdf`}>
-            {({ blob, url, loading, error }) =>
-              loading ? 'Cargando documento...' : 'Descargar los cursos PDF'
-            }
-          </PDFDownloadLink> 
-          </div>
+          <div className="bg-blue-200 hover:bg-blue-300 text-gray-600 font-semibold py-2 px-4 rounded w-64 mt-5 inline-flex items-center">
+  <FaFilePdf />
+  <PDFDownloadLink document={<CursosPdf students={students} />} fileName={`Registro_de_lista_de_cursos-${fechaFormateada}.pdf`}>
+    {({ blob, url, loading, error }) =>
+      loading ? 'Cargando documento...' : 'Descargar los cursos PDF'
+    }
+  </PDFDownloadLink>
+</div>
           <br />
-          <button className="bg-blue-200 hover:bg-blue-300 text-gray-600 font-semibold py-2 px-4 rounded" onClick={() => exportarAExcel(students, `Lista_de_cursos_${fechaFormateada}`)}>Exportar a Excel</button>
+          <button className="bg-blue-200 hover:bg-blue-300 text-gray-600 font-semibold py-2 px-4 mt-5 rounded inline-flex items-center" onClick={() => exportarAExcel(students, `Lista_de_cursos_${fechaFormateada}`)}>
+  <FaFileExcel />
+  <span>Descargar los cursos Excel</span>
+</button>
+
 
 
         </div>

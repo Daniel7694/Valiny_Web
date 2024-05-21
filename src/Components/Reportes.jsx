@@ -2,6 +2,8 @@ import React, { useEffect, useState, useRef } from 'react';
 import axios from 'axios';
 import * as d3 from 'd3';
 import { FaBars } from 'react-icons/fa';
+import { FaFileExcel } from 'react-icons/fa';
+import { FaFilePdf } from 'react-icons/fa';
 import Menu from './menú';
 import { PDFDownloadLink } from '@react-pdf/renderer';
 import ReportesPdf from './ReportesPdf';
@@ -72,8 +74,8 @@ const Reportes = () => {
       { name: 'Falla Just.', value: data[0].Porcentaje_Falla_Justificada },
     ];
 
-    const barWidth = 300;
-    const barHeight = 200;
+    const barWidth = 400;
+    const barHeight = 300;
     const barMargin = { top: 20, right: 20, bottom: 30, left: 40 };
 
     const x = d3.scaleBand()
@@ -121,8 +123,8 @@ const Reportes = () => {
       { name: 'Falla Justificada', value: data[0].Porcentaje_Falla_Justificada },
     ];
 
-    const donutWidth = 200;
-    const donutHeight = 200;
+    const donutWidth = 300;
+    const donutHeight = 300;
     const radius = Math.min(donutWidth, donutHeight) / 2;
 
     const color = d3.scaleOrdinal()
@@ -261,7 +263,8 @@ const Reportes = () => {
         <svg ref={barSvgRef}></svg>
         <svg ref={donutSvgRef}></svg>
       </div>
-      <div className="bg-blue-200 hover:bg-blue-300 text-gray-600 font-semibold py-2 px-4 rounded w-64 mt-5">
+      <div className="bg-blue-200 hover:bg-blue-300 text-gray-600 font-semibold py-2 px-4 rounded w-64 mt-5 inline-flex items-center">
+      <FaFilePdf />
           <PDFDownloadLink document={<ReportesPdf students={students} />} fileName={`Registro_de_lista_de_reportes-${fechaFormateada}.pdf`}>
             {({ blob, url, loading, error }) =>
               loading ? 'Cargando documento...' : 'Descargar los Reportes PDF'
@@ -269,7 +272,11 @@ const Reportes = () => {
           </PDFDownloadLink>   
           </div>
           <br />
-          <button className="bg-blue-200 hover:bg-blue-300 text-gray-600 font-semibold py-2 px-4 rounded" onClick={() => exportarAExcel(students, `Reportes de cursos_${fechaFormateada}`)}>Exportar a Excel</button>
+          <button className="bg-blue-200 hover:bg-blue-300 text-gray-600 font-semibold py-2 px-4 mt-5 rounded inline-flex items-center" onClick={() => exportarAExcel(students, `Reporte_de_cursos_${fechaFormateada}`)}>
+  <FaFileExcel />
+  <span>Descargar los Reportes Excel</span>
+</button>
+
     </div>
   );
 };
