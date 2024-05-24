@@ -100,7 +100,7 @@ CREATE TABLE  Registro (
 );
 
 INSERT INTO Registro (ID_Registro, Nom_Registro)
-VALUES (0, 'Falla'), (1, 'Asiste'), (2, 'Retardo'), (3, 'Evasion'), (4, 'Falla Justificada');
+VALUES (0, 'Falla'), (1, 'Asiste'), (2, 'Asiste'), (3, 'Evasion'), (4, 'Falla Justificada');
 
 CREATE TABLE  Estudiantes (
   ID_Estudiante INT NOT NULL,

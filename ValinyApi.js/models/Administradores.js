@@ -1,6 +1,14 @@
 const db = require('../config/config');
 const jwt = require('jsonwebtoken');
 
+const crypto = require('crypto');
+
+function aesEncrypt(text, key) {
+  const cipher = crypto.createCipher('aes-256-cbc', key);
+  let encrypted = cipher.update(text, 'utf8', 'hex');
+  encrypted += cipher.final('hex');
+  return encrypted;
+}
 const Administradores = {};
 
 Administradores.create = async (administrador, result) => {
@@ -56,8 +64,9 @@ Administradores.getById = (id, result) => {
 };
 
 Administradores.authenticate = (id, password, result) => {
-    const sql = 'SELECT * FROM Vista_Admin WHERE Documento = ? AND AES_DECRYPT(UNHEX(Contraseña), "HJCJ75") = ?';
-    db.query(sql, [id, password], (err, res) => {
+    const encryptedPassword = aesEncrypt(password, 'HJCJ75');
+    const sql = 'SELECT * FROM Vista_Admin WHERE Documento = ? AND Contraseña = ?';
+    db.query(sql, [id, encryptedPassword], (err, res) => {
         if (err) {
             console.log('Error al autenticar el administrador: ', err);
             result(err, null);

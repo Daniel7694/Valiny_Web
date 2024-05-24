@@ -28,7 +28,7 @@ administradoresRoutes(app); // Usar las rutas de administradores
 
 // Dirección IP V4 de la máquina, consulta con ipconfig 
 
-server.listen(port, '192.168.1.39' || 'localhost', function() {
+server.listen(port, '10.175.66.22' || 'localhost', function() {
  console.log('Aplicación de NodeJS ' + process.pid + ' inició en el puerto ' + port);
 });
 
