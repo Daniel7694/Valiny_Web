@@ -2,12 +2,13 @@
  * @param { import("knex").Knex } knex
  * @returns { Promise<void> }
  */
+
  exports.up = function(knex) {
     return knex.raw(`
       CREATE VIEW Vista_Estu AS
       SELECT 
         E.ID_Estudiante AS 'Documento',
-        CONCAT(E.P_Nombre, ' ', E.S_Nombre, ' ', E.P_Apellido, ' ', E.S_Apellido) AS 'Nombres',
+        CONCAT(E.P_Nombre, ' ', COALESCE(E.S_Nombre, ''), ' ', COALESCE(E.T_Nombre, ''), ' ', E.P_Apellido, ' ', E.S_Apellido) AS 'Nombres',
         G.Nom_Genero AS 'Genero',
         T.Tipo_Documento AS 'Tipo_de_documento',
         C.Num_Curso AS 'Curso',
