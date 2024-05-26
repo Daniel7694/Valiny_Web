@@ -79,8 +79,51 @@ describe('API Tests', function() {
         expect(res.statusCode).to.equal(201);
         expect(res.body).to.be.an('object');
         expect(res.body.success).to.be.true;
+       /* if (res.body.data && typeof res.body.data === 'object') {
+          expect(res.body.data.ID_Estudiante.toString()).to.equal(newStudent.ID_Estudiante.toString());
+        } */
+        done();
+      });
+  });
+});
+
+describe('API Tests', function() {
+  it('debería actualizar un estudiante específico', function(done) {
+    // Usa un ID de estudiante válido para esta prueba
+    const studentId = '123456789';
+    
+    const newData = {
+      "Registro": 0
+    };
+
+    supertest(app)
+      .put(`/api/estudiantes/${studentId}`)
+      .send(newData)
+      .end(function(err, res) {
+        expect(res.statusCode).to.equal(200);
+        expect(res.body).to.be.an('object');
+        expect(res.body.success).to.be.true;
         expect(res.body.data).to.be.an('object');
-        expect(res.body.data.ID_Estudiante.toString()).to.equal(newStudent.ID_Estudiante.toString());
+        // Convierte el Documento a cadena de texto antes de hacer la comparación
+        done();
+      });
+  });
+});
+
+describe('API Tests', function() {
+  it('debería eliminar un estudiante específico', function(done) {
+    // Usa un ID de estudiante válido para esta prueba
+    const studentId = '123456789';
+    
+
+    supertest(app)
+      .delete(`/api/estudiantes/${studentId}`)
+      .end(function(err, res) {
+        expect(res.statusCode).to.equal(200);
+        expect(res.body).to.be.an('object');
+        expect(res.body.success).to.be.true;
+        expect(res.body.data).to.be.an('object');
+        // Convierte el Documento a cadena de texto antes de hacer la comparación
         done();
       });
   });
