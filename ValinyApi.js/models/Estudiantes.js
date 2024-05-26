@@ -3,45 +3,46 @@ const db = require('../config/config');
 
 const Estudiantes = {};
 Estudiantes.create = async (estudiantes, result) => {
-        const sql =
-            `INSERT INTO Estudiantes (
-                ID_Estudiante,
-                P_Nombre, 
-                S_Nombre, 
-                T_Nombre, 
-                P_Apellido, 
-                S_Apellido, 
-                Genero, 
-                T_Documento, 
-                Curso, 
-                Administradores, 
-                Registro)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+    const sql =
+        `INSERT INTO Estudiantes (
+            ID_Estudiante,
+            P_Nombre, 
+            S_Nombre, 
+            T_Nombre, 
+            P_Apellido, 
+            S_Apellido, 
+            Genero, 
+            T_Documento, 
+            Curso, 
+            Administradores, 
+            Registro)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
 
-        db.query(sql,
-            [
-                estudiantes.ID_Estudiante,
-                estudiantes.P_Nombre,
-                estudiantes.S_Nombre,
-                estudiantes.T_Nombre,
-                estudiantes.P_Apellido,
-                estudiantes.S_Apellido,
-                estudiantes.Genero,
-                estudiantes.T_Documento,
-                estudiantes.Curso,
-                estudiantes.Administradores,
-                estudiantes.Registro,
-            ], (err, res) => {
-                if (err) {
-                    console.log('Error al crear el usuario: ', err);
-                    result(err, null);
-                }
-                else {
+    db.query(sql,
+        [
+            estudiantes.ID_Estudiante,
+            estudiantes.P_Nombre,
+            estudiantes.S_Nombre,
+            estudiantes.T_Nombre,
+            estudiantes.P_Apellido,
+            estudiantes.S_Apellido,
+            estudiantes.Genero,
+            estudiantes.T_Documento,
+            estudiantes.Curso,
+            estudiantes.Administradores,
+            estudiantes.Registro,
+        ], (err, res) => {
+            if (err) {
+                console.log('Error al crear el usuario: ', err);
+                result(err, null);
+            }
+            else {
                 console.log('Usuario creado: ');
-        
+                result(null, res); // Aquí se llama a la función result
             }
         }
-        )};
+    )};
+
         
         Estudiantes.getById = (id, result) => {
             const sql = 'SELECT * FROM Vista_Estu WHERE Documento = ?'; // Utilizamos la vista Vista_Estu en lugar de la tabla Estudiantes
