@@ -19,3 +19,19 @@ describe('API Tests', function() {
       });
   });
 });
+
+describe('API Tests', function() {
+  it('debería devolver todos los porcentajes', function(done) {
+    // Usa Supertest para hacer una solicitud HTTP a tu API
+    supertest(app)
+      .get('/api/porcentajes/porcentaje_registros')
+      .end(function(err, res) {
+        // Asegúrate de que la respuesta tenga el estado HTTP correcto y el formato de respuesta esperado
+        expect(res.statusCode).to.equal(200);
+        expect(res.body).to.be.an('object');
+        expect(res.body.success).to.be.true;
+        expect(res.body.data).to.be.an('array');
+        done();
+      });
+  });
+});
