@@ -25,14 +25,13 @@ function Inicio({ setToken }) {
     };
   
     // Realizar la solicitud a la API
-    fetch('http://192.168.1.39:3000/api/administradores/authenticate', options)
+    fetch('http://10.175.83.138:3000/api/administradores/authenticate', options)
     .then((response) => response.json())
     .then((data) => {
       // Aquí puedes manejar la respuesta de la API
       if (data.success) {
         // Guardar el token en el almacenamiento local
         localStorage.setItem('token', data.token);
-  
         // Actualizar el estado de la aplicación con el nuevo token
         setToken(data.token);
 

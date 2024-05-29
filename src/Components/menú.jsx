@@ -1,11 +1,32 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { FaInfoCircle, FaBookReader, FaRegListAlt } from 'react-icons/fa';
 import MyPdfViewer from './MyPdfViewer'; // Importa el componente MyPdfViewer
+import { useContext } from 'react';
+import { UserContext } from '../App'; // Importa el contexto
 
 function Menu({ setToken, onClose, onInstructionsClick }) {
   const [showPdf, setShowPdf] = useState(false);
   const navigate = useNavigate();
+  const [admin, setAdmin] = useState([]);
+
+  const { userData } = useContext(UserContext); // Usa el contexto
+
+console.log(userData.ID_Admin);
+
+useEffect(() => {
+  const fetchData = async () => {
+    try {
+      const response = await axios.get(`http://10.175.83.138:3000/api/administradores/${userData.ID_Admin}`);
+      setAdmin(response.data.data);
+    } catch (error) {
+      console.error('Error fetching data: ', error);
+    }
+  };
+
+  fetchData();
+}, []);
 
   const handleLogout = () => {
     localStorage.removeItem('token'); 
@@ -50,8 +71,8 @@ function Menu({ setToken, onClose, onInstructionsClick }) {
       <div className="w-96 h-full bg-white rounded-md font-serif shadow-lg relative">
         <button onClick={handleLogout} className="mt-4 text-blue-500 p-4">Log Out</button>
         <div className="mt-12 p-4 text-center">
-          <p className="font-bold text-lg">Página Web Valiny</p>
-          <p>La mejor experiencia</p>
+          <p className="font-bold text-lg">{admin.Nombres}</p>
+          <p>{admin.Rol}</p>
         </div>
         <ul className="mt-8">
           <button onClick={handleReportes} className='w-full'>

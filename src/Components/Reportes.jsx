@@ -23,6 +23,16 @@ const Reportes = () => {
   const fecha = new Date();
   const fechaFormateada = `${fecha.getDate()}-${fecha.getMonth() + 1}-${fecha.getFullYear()}`;
 
+  const [token, setToken] = useState(null);
+
+  useEffect(() => {
+    const storedToken = localStorage.getItem('token');
+
+    if (storedToken) {
+      setToken(storedToken);
+      console.log(token);
+    }
+  }, [token]);
 
   const handleEspecificos = () => {
     navigate('/ReporteEspecifico');
@@ -30,7 +40,7 @@ const Reportes = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('http://192.168.1.39:3000/api/porcentajes/porcentaje_registros');
+        const response = await axios.get('http://10.175.83.138:3000/api/porcentajes/porcentaje_registros');
         setStudents(response.data.data);
         renderBarChart(response.data.data);
         renderDonutChart(response.data.data);
@@ -183,7 +193,7 @@ const Reportes = () => {
 
   return (
     <div className="relative container mx-auto px-4 sm:px-8">
-      {isMenuOpen && <Menu onClose={closeMenu} onInstructionsClick={handleInstructions} />}
+      {isMenuOpen && <Menu setToken={setToken} onClose={closeMenu} onInstructionsClick={handleInstructions} />}
       <div className="py-8">
         <div className='flex flex-row'>
           <button onClick={handleMenu}>

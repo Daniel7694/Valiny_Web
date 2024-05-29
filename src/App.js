@@ -36,7 +36,7 @@ function App() {
             <>
               <Route path="/Reportes" element={<Reportes setToken={setToken} />} />
               <Route path="/Cursos" element={<Cursos setToken={setToken} />} />
-              <Route path="/Menu" element={<Menu setToken={setToken} onClose={closeMenu}  />} />
+              <Route path="/Menu" element={<Menu setToken={setToken} onClose={closeMenu} />} />
               <Route path="/ReporteEspecifico" element={<ReportesEspecificos setToken={setToken} />} />
             </>
           )}
