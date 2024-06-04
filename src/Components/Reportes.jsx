@@ -40,7 +40,7 @@ const Reportes = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('http://10.175.83.138:3000/api/porcentajes/porcentaje_registros');
+        const response = await axios.get('http://192.168.1.15:3000/api/porcentajes/porcentaje_registros');
         setStudents(response.data.data);
         renderBarChart(response.data.data);
         renderDonutChart(response.data.data);

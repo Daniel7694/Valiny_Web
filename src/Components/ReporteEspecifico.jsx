@@ -22,7 +22,7 @@ const ReporteEspecifico = ({ setToken }) => {
   useEffect(() => {
     const cargarEstudiantes = async () => {
       try {
-        const response = await axios.get("http://192.168.1.39:3000/api/estudiantes");
+        const response = await axios.get("http://192.168.1.15:3000/api/estudiantes");
         console.log("Datos de estudiantes:", response.data); // Verificar datos de estudiantes recibidos
   
         // Verificar si los datos recibidos son un array
