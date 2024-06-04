@@ -49,6 +49,11 @@ useEffect(() => {
     onClose();
   };
 
+  const handleRegistro = () => {
+    navigate('/Registro');
+    onClose();
+  };
+
   const handleInstructions = () => {
     setShowPdf(true);
     onClose();
@@ -76,20 +81,29 @@ useEffect(() => {
           <p>{admin.Rol}</p>
         </div>
         <ul className="mt-8">
-  { admin.Rol === 'SuperAdmin' && (
-    <button onClick={handleReportes} className='w-full'>
+
+
+<button onClick={handleReportes} className='w-full'>
       <li className="mt-12 flex items-center p-4 hover:bg-blue-100">
         <FaRegListAlt size={20} color="#3B82F6" />
         <span className="ml-2">Reportes</span>
       </li>
     </button>
-  )}
+
   <button onClick={handleCursos} className='w-full'>
     <li className="flex items-center p-4 hover:bg-blue-100">
       <FaBookReader size={20} color="#3B82F6" />
       <span className="ml-2">Cursos</span>
     </li>
   </button>
+  { admin.Rol === 'SuperAdmin' && (
+    <button onClick={handleRegistro} className='w-full'>
+      <li className="mt-12 flex items-center p-4 hover:bg-blue-100">
+        <FaRegListAlt size={20} color="#3B82F6" />
+        <span className="ml-2">Registro</span>
+      </li>
+    </button>
+  )}
 </ul>
 <div className="absolute bottom-0 left-0 ">
   <button onClick={instructionsHandler} className="flex items-center justify-center p-4 hover:bg-blue-200 w-full">

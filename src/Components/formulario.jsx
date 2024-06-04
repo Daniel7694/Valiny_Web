@@ -1,7 +1,31 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import '../index.css'; // Asegúrate de importar el archivo CSS correcto
+import Menu from './menú';
+import { FaBars } from 'react-icons/fa';
 
 function Registro() {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [token, setToken] = useState(null);
+
+  useEffect(() => {
+    const storedToken = localStorage.getItem('token');
+
+    if (storedToken) {
+      setToken(storedToken);
+      console.log(token);
+    }
+  }, [token]);
+
+  const handleMenu = () => {
+    setIsMenuOpen(true);
+  };
+  const handleInstructions = () => {
+
+    setIsMenuOpen(false); // Cierra el menú cuando se abre el PDF
+
+  };
+
+
   const [formData, setFormData] = useState({
     N_Documento: '',
     Rol: '',
@@ -31,6 +55,10 @@ function Registro() {
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-100">
       <div className="w-full max-w-lg bg-white rounded-md shadow-lg p-8">
+      {isMenuOpen && <Menu setToken={setToken} onClose={() => setIsMenuOpen(false)} onInstructionsClick={handleInstructions} />}
+      <button onClick={handleMenu}>
+            <FaBars size={40} />
+          </button>
         <h2 className="text-2xl font-bold mb-6 text-center">Registro de Entidades</h2>
         <form onSubmit={handleSubmit}>
           <div className="mb-4">

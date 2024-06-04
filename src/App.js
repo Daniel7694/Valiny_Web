@@ -6,7 +6,7 @@ import Reportes from './Components/Reportes';
 import Menu from './Components/menú';
 import Cursos from './Components/Cursos';
 import ReportesEspecificos from './Components/ReporteEspecifico';
-
+import Registro from './Components/formulario';
 export const UserContext = createContext();
 
 function App() {
@@ -39,7 +39,7 @@ function App() {
             <>
 
               <Route path="/Reportes" element={<Reportes setToken={setToken} />} />
-
+              <Route path="/Registro" element={<Registro setToken={setToken} />} />
 
               <Route path="/Cursos" element={<Cursos setToken={setToken} />} />
               <Route path="/Menu" element={<Menu setToken={setToken} onClose={closeMenu} />} />
