@@ -11,3 +11,16 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+/* Oculta las flechas en los navegadores Chrome, Safari y Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Oculta las flechas en Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
