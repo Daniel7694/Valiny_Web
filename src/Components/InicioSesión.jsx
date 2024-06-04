@@ -28,7 +28,7 @@ function Inicio({ setToken }) {
     };
   
     // Realizar la solicitud a la API
-    fetch('http://10.175.83.138:3000/api/administradores/authenticate', options)
+    fetch('http://192.168.1.39:3000/api/administradores/authenticate', options)
     .then((response) => response.json())
     .then((data) => {
       // Aquí puedes manejar la respuesta de la API
