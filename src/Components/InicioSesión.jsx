@@ -2,11 +2,14 @@ import React, { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { UserContext } from '../App'; // Importa el contexto
 
+
 function Inicio({ setToken }) {
   const [usuario, setUsuario] = useState('');
   const [contraseña, setContraseña] = useState(''); 
   const navigate = useNavigate();
   const { setUserData } = useContext(UserContext); // Usa el contexto
+
+  
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -25,7 +28,7 @@ function Inicio({ setToken }) {
     };
   
     // Realizar la solicitud a la API
-    fetch('http://192.168.1.15:3000/api/administradores/authenticate', options)
+    fetch('http://10.175.83.138:3000/api/administradores/authenticate', options)
     .then((response) => response.json())
     .then((data) => {
       // Aquí puedes manejar la respuesta de la API
@@ -67,7 +70,8 @@ function Inicio({ setToken }) {
               Usuario:
             </label>
             <input
-              type="text"
+              type="number"
+              maxLength="10" 
               id="usuario"
               className="mt-1 p-2 border rounded-md w-full"
               placeholder="Ingresa tu usuario"
@@ -81,7 +85,9 @@ function Inicio({ setToken }) {
               Contraseña:
             </label>
             <input
-              type="password"
+              type="text" 
+              maxLength="10" 
+              pattern="\d*"
               id="contraseña"
               className="mt-1 p-2 border rounded-md w-full"
               placeholder="Ingresa tu contraseña"
