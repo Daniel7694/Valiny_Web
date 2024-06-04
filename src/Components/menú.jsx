@@ -76,7 +76,7 @@ useEffect(() => {
           <p>{admin.Rol}</p>
         </div>
         <ul className="mt-8">
-  { admin.Rol === 'Orientador' && (
+  { admin.Rol === 'SuperAdmin' && (
     <button onClick={handleReportes} className='w-full'>
       <li className="mt-12 flex items-center p-4 hover:bg-blue-100">
         <FaRegListAlt size={20} color="#3B82F6" />

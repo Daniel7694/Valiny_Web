@@ -10,7 +10,7 @@
       R.Nombre_Rol AS 'Rol',
       C.Contrasenia AS 'Contraseña',
       T.Tipo_Documento AS 'Tipo_de_documento',
-      CONCAT(P_Nombre, ' ', COALESCE(S_Nombre, ''), ' ', COALESCE(T_Nombre, ''), ' ', P_Apellido, ' ', S_Apellido) AS 'Nombres',
+      CONCAT(P_Nombre, ' ', COALESCE(S_Nombre, ''), ' ', COALESCE(T_Nombre, ''), ' ', P_Apellido, ' ', COALESCE(S_Apellido, '')) AS 'Nombres',
       G.Nom_Genero AS 'Genero' 
     FROM Administradores A 
     INNER JOIN Rol R ON R.ID_Rol = A.Rol 
