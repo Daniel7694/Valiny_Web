@@ -8,6 +8,7 @@ const cors = require('cors');
 */
 const estudiantesRoutes = require('./routes/EstudiantesRoutes');
 const administradoresRoutes = require('./routes/AdministradoresRoutes'); // Importar las rutas de administradores
+const clavesRoutes = require('./routes/ClavesRoutes');
 
 const port = process.env.PORT || 3000; 
 
@@ -23,6 +24,7 @@ app.set('port', port);
 */
 estudiantesRoutes(app); // Usar las rutas de estudiantes
 administradoresRoutes(app); // Usar las rutas de administradores
+clavesRoutes(app); // Usar las rutas de las claves
 
 app.get('/', (req, res) => { 
  res.send('Ruta raíz del Backend');
@@ -35,7 +37,7 @@ app.use((err, req, res, next) => {
 });
 
 if (require.main === module) {
- app.listen(port, '192.168.1.38' || 'localhost', () => {
+ app.listen(port, '192.168.1.39' || 'localhost', () => {
    console.log('Aplicación de NodeJS ' + process.pid + ' inició en el puerto ' + port);
  });
 }

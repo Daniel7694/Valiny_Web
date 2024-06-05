@@ -18,6 +18,7 @@ module.exports = {
             });
         });
     },
+    
 
     getById(req, res) {
         const administradorId = req.params.id; // Obtener el ID del parámetro de la URL

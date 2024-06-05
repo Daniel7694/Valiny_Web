@@ -4,6 +4,7 @@ import { FaBars } from 'react-icons/fa';
 import { FaFileExcel } from 'react-icons/fa';
 import { FaFilePdf } from 'react-icons/fa';
 import Menu from './menú';
+import MyPdfViewer from './MyPdfViewer';
 import { PDFDownloadLink } from '@react-pdf/renderer';
 import CursosPdf from './CursosPdf';
 import * as FileSaver from 'file-saver';
@@ -12,15 +13,27 @@ import * as XLSX from 'xlsx';
 const Cursos = () => {
   const [students, setStudents] = useState([]);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [showPdf, setShowPdf] = useState(false);
   const [selectedCourse, setSelectedCourse] = useState('501'); // Estado para almacenar el curso seleccionado
 
   const fecha = new Date();
-  const fechaFormateada = `${fecha.getDate()}-${fecha.getMonth() + 1}-${fecha.getFullYear()}`;
+  const fechaFormateada = `${fecha.getDate()}-${fecha.getMonth()+1}-${fecha.getFullYear()}`;
+
+  const [token, setToken] = useState(null);
+
+  useEffect(() => {
+    const storedToken = localStorage.getItem('token');
+
+    if (storedToken) {
+      setToken(storedToken);
+      console.log(token);
+    }
+  }, [token]);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('http://10.175.83.138:3000/api/estudiantes');
+        const response = await axios.get('http://192.168.1.39:3000/api/estudiantes');
         setStudents(response.data.data);
       } catch (error) {
         console.error('Error fetching data: ', error);
@@ -44,12 +57,23 @@ const Cursos = () => {
     const datos = new Blob([bufferExcel], { type: tipoArchivo });
     FileSaver.saveAs(datos, nombreArchivo + extensionArchivo);
   };
+  const handleInstructions = () => {
+    setShowPdf(true);
+    setIsMenuOpen(false); // Cierra el menú cuando se abre el PDF
+    console.log('showPdf:', showPdf);
+  };
 
+  console.log('showPdf:', showPdf); // Agregamos un console.log aquí para verificar el valor de showPdf
+
+  if (showPdf) {
+    console.log('showPdf is true'); // Agregamos un console.log aquí para verificar si el bloque condicional se está ejecutando
+    return <MyPdfViewer file="/ManualDeInstruccionesValiny.pdf" />;
+  }
   const filteredStudents = students.filter(student => student.Curso === selectedCourse); // Filtra estudiantes por el curso seleccionado
 
   return (
     <div className="relative container mx-auto px-4 sm:px-8">
-      {isMenuOpen && <Menu onClose={() => setIsMenuOpen(false)} />}
+{isMenuOpen && <Menu setToken={setToken} onClose={() => setIsMenuOpen(false)} onInstructionsClick={handleInstructions} />}
       <div className="py-8">
         <div className='flex flex-row'>
           <button onClick={handleMenu}>

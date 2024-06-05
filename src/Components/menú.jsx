@@ -8,17 +8,17 @@ import { UserContext } from '../App';
 function Menu({ setToken, onClose, onInstructionsClick }) {
   const [showPdf, setShowPdf] = useState(false);
   const navigate = useNavigate();
-  const [admin, setAdmin] = useState(null); // Cambiado a null para inicialización correcta
+  const [admin, setAdmin] = useState([]);
   const { userData } = useContext(UserContext);
 
-  const { userData } = useContext(UserContext); // Usa el contexto
+
 
 console.log(userData.ID_Admin);
 
 useEffect(() => {
   const fetchData = async () => {
     try {
-      const response = await axios.get(`http://10.175.83.138:3000/api/administradores/${userData.ID_Admin}`);
+      const response = await axios.get(`http://192.168.1.39:3000/api/administradores/${userData.ID_Admin}`);
       setAdmin(response.data.data);
 
     } catch (error) {
@@ -27,7 +27,7 @@ useEffect(() => {
   };
 
     fetchData();
-  }, [userData]);
+  }, []);
 
   const handleLogout = () => {
     localStorage.removeItem('token');
@@ -88,27 +88,34 @@ useEffect(() => {
           </div>
         )}
         <ul className="mt-8">
-  { admin.Rol === 'SuperAdmin' && (
-    <button onClick={handleReportes} className='w-full'>
-      <li className="mt-12 flex items-center p-4 hover:bg-blue-100">
-        <FaRegListAlt size={20} color="#3B82F6" />
-        <span className="ml-2">Reportes</span>
-      </li>
-    </button>
-  )}
-  <button onClick={handleCursos} className='w-full'>
-    <li className="flex items-center p-4 hover:bg-blue-100">
-      <FaBookReader size={20} color="#3B82F6" />
-      <span className="ml-2">Cursos</span>
-    </li>
-  </button>
-</ul>
-<div className="absolute bottom-0 left-0 ">
-  <button onClick={instructionsHandler} className="flex items-center justify-center p-4 hover:bg-blue-200 w-full">
-    <FaInfoCircle size={20} color="#3B82F6" />
-    <span className="ml-2">Manual de instrucciones</span>
-  </button>
-</div>
+        <button onClick={handleReportes} className='w-full'>
+              <li className="mt-12 flex items-center p-4 hover:bg-blue-100">
+                <FaRegListAlt size={20} color="#3B82F6" />
+                <span className="ml-2">Reportes</span>
+              </li>
+            </button>
+          <button onClick={handleCursos} className='w-full'>
+            <li className="flex items-center p-4 hover:bg-blue-100">
+              <FaBookReader size={20} color="#3B82F6" />
+              <span className="ml-2">Cursos</span>
+            </li>
+          </button>
+
+            {admin && admin.Rol === 'SuperAdmin' && (
+            <button onClick={handleRegistro} className='w-full'>
+              <li className="mt-12 flex items-center p-4 hover:bg-blue-100">
+                <FaRegListAlt size={20} color="#3B82F6" />
+                <span className="ml-2">Registro</span>
+              </li>
+            </button>
+          )}
+        </ul>
+        <div className="absolute bottom-0 left-0 ">
+          <button onClick={instructionsHandler} className="flex items-center justify-center p-4 hover:bg-blue-200 w-full">
+            <FaInfoCircle size={20} color="#3B82F6" />
+            <span className="ml-2">Manual de instrucciones</span>
+          </button>
+        </div>
 
       </div>
       <div className="flex-grow bg-black bg-opacity-50" onClick={onClose}>{imgHandler}</div>

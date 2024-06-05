@@ -4,7 +4,7 @@
  */
  exports.up = function(knex) {
     return knex.schema.createTable('Clave', function(table) {
-      table.integer('ID_Clave').primary();
+      table.increments('ID_Clave').primary();
       table.string('Contrasenia', 500).notNullable();
     });
   };

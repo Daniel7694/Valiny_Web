@@ -6,7 +6,7 @@
     return knex.schema.createTable('Administradores', function(table) {
       table.integer('ID_Admin').primary();
       table.integer('Rol').notNullable().references('ID_Rol').inTable('Rol');
-      table.integer('Clave').notNullable().references('ID_Clave').inTable('Clave');
+      table.integer('Clave').unsigned().notNullable().references('ID_Clave').inTable('Clave');
       table.integer('T_Documento').notNullable().references('ID_Documento').inTable('T_Documento');
       table.string('P_Nombre', 20).notNullable();
       table.string('S_Nombre', 20);

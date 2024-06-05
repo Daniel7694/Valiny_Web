@@ -11,6 +11,8 @@ function aesEncrypt(text, key) {
 }
 const Administradores = {};
 
+
+
 Administradores.create = async (administrador, result) => {
     const sql = `INSERT INTO Administradores (
                     ID_Admin,
@@ -45,7 +47,9 @@ Administradores.create = async (administrador, result) => {
             result(null, res);
         }
     });
-};
+}; 
+
+
 
 Administradores.getById = (id, result) => {
     const sql = 'SELECT * FROM Vista_Admin WHERE Documento = ?'; // Utilizamos la vista Vista_Admin en lugar de la tabla Administradores

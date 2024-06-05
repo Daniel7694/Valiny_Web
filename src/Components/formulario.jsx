@@ -20,14 +20,12 @@ function Registro() {
     setIsMenuOpen(true);
   };
   const handleInstructions = () => {
-
     setIsMenuOpen(false); // Cierra el menú cuando se abre el PDF
-
   };
 
 
   const [formData, setFormData] = useState({
-    N_Documento: '',
+    ID_Admin: '',
     Rol: '',
     Clave: '',
     T_Documento: '',
@@ -39,6 +37,37 @@ function Registro() {
     Genero: '',
   });
 
+  const createClave = async (clave) => {
+    const response = await fetch('http://192.168.1.39:3000/api/clave/create', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ Contrasenia: clave }),
+    });
+  
+    if (!response.ok) {
+      throw new Error('Error al crear la clave');
+    }
+  
+    const data = await response.json();
+    return data;
+  };
+  
+  const createAdministrador = async (administrador) => {
+    const response = await fetch('http://192.168.1.39:3000/api/administradores/create', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(administrador),
+    });
+  
+    if (!response.ok) {
+      throw new Error('Error al crear el administrador');
+    }
+  
+    const data = await response.json();
+    return data;
+  };
+  
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({
@@ -47,10 +76,25 @@ function Registro() {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(formData);
+  
+    try {
+      // Primero, crea la clave
+      const claveData = await createClave(formData.Clave);
+  
+      // Luego, crea el administrador con el ID de la clave creada
+      const administradorData = await createAdministrador({
+        ...formData,
+        Clave: claveData.ID_Clave, // Asegúrate de que este es el nombre correcto del campo
+      });
+  
+      console.log('Administrador creado:', administradorData);
+    } catch (error) {
+      console.error('Error:', error);
+    }
   };
+  
 
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-100">
@@ -62,12 +106,12 @@ function Registro() {
         <h2 className="text-2xl font-bold mb-6 text-center">Registro de Entidades</h2>
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
-            <label htmlFor="N_Documento" className="block text-gray-700">Numero de documento</label>
+            <label htmlFor="ID_Admin" className="block text-gray-700">Numero de documento</label>
             <input
               type="text"
-              id="N_Documento"
-              name="N_Documento"
-              value={formData.N_Documento}
+              id="ID_Admin"
+              name="ID_Admin"
+              value={formData.ID_Admin}
               onChange={handleChange}
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               required
