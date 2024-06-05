@@ -11,18 +11,20 @@ function Menu({ setToken, onClose, onInstructionsClick }) {
   const [admin, setAdmin] = useState(null); // Cambiado a null para inicialización correcta
   const { userData } = useContext(UserContext);
 
-  // Asegúrate de que userData tiene el ID_Admin antes de hacer la petición
-  useEffect(() => {
-    const fetchData = async () => {
-      if (userData && userData.ID_Admin) {
-        try {
-          const response = await axios.get(`http://192.168.1.15:3000/api/administradores/${userData.ID_Admin}`);
-          setAdmin(response.data.data);
-        } catch (error) {
-          console.error('Error fetching data: ', error);
-        }
-      }
-    };
+  const { userData } = useContext(UserContext); // Usa el contexto
+
+console.log(userData.ID_Admin);
+
+useEffect(() => {
+  const fetchData = async () => {
+    try {
+      const response = await axios.get(`http://10.175.83.138:3000/api/administradores/${userData.ID_Admin}`);
+      setAdmin(response.data.data);
+
+    } catch (error) {
+      console.error('Error fetching data: ', error);
+    }
+  };
 
     fetchData();
   }, [userData]);
@@ -44,6 +46,11 @@ function Menu({ setToken, onClose, onInstructionsClick }) {
 
   const handleReportes = () => {
     navigate('/Reportes');
+    onClose();
+  };
+
+  const handleRegistro = () => {
+    navigate('/Registro');
     onClose();
   };
 
@@ -81,27 +88,28 @@ function Menu({ setToken, onClose, onInstructionsClick }) {
           </div>
         )}
         <ul className="mt-8">
-          {admin && admin.Rol === 'SuperAdmin' && (
-            <button onClick={handleReportes} className='w-full'>
-              <li className="mt-12 flex items-center p-4 hover:bg-blue-100">
-                <FaRegListAlt size={20} color="#3B82F6" />
-                <span className="ml-2">Reportes</span>
-              </li>
-            </button>
-          )}
-          <button onClick={handleCursos} className='w-full'>
-            <li className="flex items-center p-4 hover:bg-blue-100">
-              <FaBookReader size={20} color="#3B82F6" />
-              <span className="ml-2">Cursos</span>
-            </li>
-          </button>
-        </ul>
-        <div className="absolute bottom-0 left-0 ">
-          <button onClick={instructionsHandler} className="flex items-center justify-center p-4 hover:bg-blue-200 w-full">
-            <FaInfoCircle size={20} color="#3B82F6" />
-            <span className="ml-2">Manual de instrucciones</span>
-          </button>
-        </div>
+  { admin.Rol === 'SuperAdmin' && (
+    <button onClick={handleReportes} className='w-full'>
+      <li className="mt-12 flex items-center p-4 hover:bg-blue-100">
+        <FaRegListAlt size={20} color="#3B82F6" />
+        <span className="ml-2">Reportes</span>
+      </li>
+    </button>
+  )}
+  <button onClick={handleCursos} className='w-full'>
+    <li className="flex items-center p-4 hover:bg-blue-100">
+      <FaBookReader size={20} color="#3B82F6" />
+      <span className="ml-2">Cursos</span>
+    </li>
+  </button>
+</ul>
+<div className="absolute bottom-0 left-0 ">
+  <button onClick={instructionsHandler} className="flex items-center justify-center p-4 hover:bg-blue-200 w-full">
+    <FaInfoCircle size={20} color="#3B82F6" />
+    <span className="ml-2">Manual de instrucciones</span>
+  </button>
+</div>
+
       </div>
       <div className="flex-grow bg-black bg-opacity-50" onClick={onClose}>{imgHandler}</div>
     </div>
