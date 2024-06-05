@@ -38,7 +38,7 @@ function Registro() {
   });
 
   const createClave = async (clave) => {
-    const response = await fetch('http://192.168.1.39:3000/api/clave/create', {
+    const response = await fetch('http://192.168.162.203:3000/api/clave/create', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ Contrasenia: clave }),
@@ -53,7 +53,7 @@ function Registro() {
   };
   
   const createAdministrador = async (administrador) => {
-    const response = await fetch('http://192.168.1.39:3000/api/administradores/create', {
+    const response = await fetch('http://192.168.162.203:3000/api/administradores/create', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(administrador),

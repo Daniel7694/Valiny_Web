@@ -18,7 +18,7 @@ console.log(userData.ID_Admin);
 useEffect(() => {
   const fetchData = async () => {
     try {
-      const response = await axios.get(`http://192.168.1.39:3000/api/administradores/${userData.ID_Admin}`);
+      const response = await axios.get(`http://192.168.162.203:3000/api/administradores/${userData.ID_Admin}`);
       setAdmin(response.data.data);
 
     } catch (error) {
@@ -94,13 +94,14 @@ useEffect(() => {
                 <span className="ml-2">Reportes</span>
               </li>
             </button>
+            {admin && admin.Rol !== 'Orientador' && (
           <button onClick={handleCursos} className='w-full'>
             <li className="flex items-center p-4 hover:bg-blue-100">
               <FaBookReader size={20} color="#3B82F6" />
               <span className="ml-2">Cursos</span>
             </li>
           </button>
-
+          )}
             {admin && admin.Rol === 'SuperAdmin' && (
             <button onClick={handleRegistro} className='w-full'>
               <li className="mt-12 flex items-center p-4 hover:bg-blue-100">

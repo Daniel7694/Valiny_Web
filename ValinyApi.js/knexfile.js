@@ -9,7 +9,7 @@
     connection: {
       host: 'localhost',
       user: 'root',
-      password: 'kenichi769',
+      password: '24023',
       database: 'cfgo_ied'
     },
     migrations: {
