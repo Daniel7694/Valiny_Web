@@ -33,7 +33,7 @@ const Cursos = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('http://192.168.162.203:3000/api/estudiantes');
+        const response = await axios.get('http://192.168.1.39:3000/api/estudiantes');
         setStudents(response.data.data);
       } catch (error) {
         console.error('Error fetching data: ', error);
@@ -95,7 +95,7 @@ const Cursos = () => {
               <option value="503">Curso 503</option>
             </select>
           </div>
-          <div className="inline-block min-w-full shadow rounded-lg overflow-hidden">
+          <div className="inline-block min-w-full shadow rounded-lg overflow-y-auto h-96">
             <table className="min-w-full leading-normal">
               <thead>
                 <tr>
