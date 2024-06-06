@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import { FaBars } from 'react-icons/fa';
 import { FaFileExcel } from 'react-icons/fa';
@@ -9,12 +9,17 @@ import { PDFDownloadLink } from '@react-pdf/renderer';
 import CursosPdf from './CursosPdf';
 import * as FileSaver from 'file-saver';
 import * as XLSX from 'xlsx';
+import { UserContext } from '../App';
 
 const Cursos = () => {
   const [students, setStudents] = useState([]);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [showPdf, setShowPdf] = useState(false);
   const [selectedCourse, setSelectedCourse] = useState('501'); // Estado para almacenar el curso seleccionado
+  const [admin, setAdmin] = useState([]);
+  const { userData } = useContext(UserContext);
+
+  console.log(userData.ID_Admin);
 
   const fecha = new Date();
   const fechaFormateada = `${fecha.getDate()}-${fecha.getMonth()+1}-${fecha.getFullYear()}`;
@@ -42,6 +47,21 @@ const Cursos = () => {
 
     fetchData();
   }, []);
+
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(`http://192.168.1.39:3000/api/administradores/${userData.ID_Admin}`);
+        setAdmin(response.data.data);
+  
+      } catch (error) {
+        console.error('Error fetching data: ', error);
+      }
+    };
+  
+      fetchData();
+    }, []);
 
   const handleMenu = () => {
     setIsMenuOpen(true);
@@ -125,6 +145,9 @@ const Cursos = () => {
               </tbody>
             </table>
           </div>
+
+          {admin && admin.Rol !== 'Docente' && (
+<>
           <h2>Descargar en:</h2>
           <div className="flex justify-center space-x-10 mt-10">
             <div className="flex flex-col items-center">
@@ -142,6 +165,8 @@ const Cursos = () => {
               <span>Excel</span>
             </div>
           </div>
+          </>
+          )}
         </div>
       </div>
     </div>

@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef, useContext  } from 'react';
 import axios from 'axios';
 import * as d3 from 'd3';
 import { FaBars } from 'react-icons/fa';
@@ -11,7 +11,6 @@ import MyPdfViewer from './MyPdfViewer';
 import { useNavigate } from 'react-router-dom';
 import * as FileSaver from 'file-saver';
 import * as XLSX from 'xlsx';
-import { useContext } from 'react';
 import { UserContext } from '../App';
 
 const Reportes = () => {
@@ -21,11 +20,14 @@ const Reportes = () => {
   const barSvgRef = useRef();
   const donutSvgRef = useRef();
   const navigate = useNavigate();
-
+  const [admin, setAdmin] = useState([]);
+  const { userData } = useContext(UserContext);
   const fecha = new Date();
   const fechaFormateada = `${fecha.getDate()}-${fecha.getMonth() + 1}-${fecha.getFullYear()}`;
 
   const [token, setToken] = useState(null);
+
+  console.log(userData.ID_Admin);
 
   useEffect(() => {
     const storedToken = localStorage.getItem('token');
@@ -36,9 +38,7 @@ const Reportes = () => {
     }
   }, [token]);
 
-  const handleEspecificos = () => {
-    navigate('/ReporteEspecifico');
-  };
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -53,6 +53,24 @@ const Reportes = () => {
 
     fetchData();
   }, []);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(`http://192.168.1.39:3000/api/administradores/${userData.ID_Admin}`);
+        setAdmin(response.data.data);
+  
+      } catch (error) {
+        console.error('Error fetching data: ', error);
+      }
+    };
+  
+      fetchData();
+    }, []);
+
+    const handleEspecificos = () => {
+      navigate('/ReporteEspecifico');
+    };
 
   const handleMenu = () => {
     setIsMenuOpen(true);
@@ -257,6 +275,9 @@ const Reportes = () => {
         <svg ref={barSvgRef}></svg>
         <svg ref={donutSvgRef}></svg>
       </div>
+
+      {admin && admin.Rol !== 'Docente' && (
+<>
       <h2>Descargar en:</h2>
       <div className="flex justify-center space-x-10 mt-10">
       <div className="flex flex-col items-center">
@@ -273,7 +294,10 @@ const Reportes = () => {
     </button>
     <span>Excel</span>
   </div>
+  
 </div>
+</>
+          )}
 </div>
   );
 };
