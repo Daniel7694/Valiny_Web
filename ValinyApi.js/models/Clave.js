@@ -9,6 +9,19 @@ function aesEncrypt(text, key) {
 }
 
 const Clave = {};
+Clave.getById = async (id, result) => {
+    const sql = `SELECT * FROM clave WHERE ID_Clave = ?`;
+    db.query(sql, [id], (err, res) => {
+        if (err) {
+            console.log('Error al obtener la clave: ', err);
+            result(err, null);
+        } else {
+            console.log('Clave obtenida correctamente');
+            result(null, res);
+        }
+    });
+};
+
 
 Clave.create = async (clave, result) => {
     // Encripta la contraseña antes de insertarla en la base de datos
@@ -21,9 +34,20 @@ Clave.create = async (clave, result) => {
             result(err, null);
         } else {
             console.log('Clave creada correctamente');
-            result(null, res);
+            // Obtiene la clave que acabas de crear
+            Clave.getById(res.insertId, (err, claveCreada) => {
+                if (err) {
+                    console.log('Error al obtener la clave: ', err);
+                    result(err, null);
+                } else {
+                    console.log('Clave obtenida correctamente');
+                    // Devuelve la clave que acabas de crear
+                    result(null, claveCreada);
+                }
+            });
         }
     });
 };
+
 
 module.exports = Clave;

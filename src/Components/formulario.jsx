@@ -7,6 +7,8 @@ function Registro() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [token, setToken] = useState(null);
 
+  const [ID_Clave, setID_Clave] = useState(null);
+
   useEffect(() => {
     const storedToken = localStorage.getItem('token');
 
@@ -38,7 +40,7 @@ function Registro() {
   });
 
   const createClave = async (clave) => {
-    const response = await fetch('http://192.168.1.39:3000/api/clave/create', {
+    const response = await fetch('http://192.168.2.103:3000/api/clave/create', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ Contrasenia: clave }),
@@ -49,11 +51,13 @@ function Registro() {
     }
   
     const data = await response.json();
-    return data;
+    return data.data.ID_Clave; // Devuelve solo el ID_Clave
   };
   
+  
+  
   const createAdministrador = async (administrador) => {
-    const response = await fetch('http://192.168.1.39:3000/api/administradores/create', {
+    const response = await fetch('http://192.168.2.103:3000/api/administradores/create', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(administrador),
@@ -81,19 +85,24 @@ function Registro() {
   
     try {
       // Primero, crea la clave
-      const claveData = await createClave(formData.Clave);
+      const claveId = await createClave(formData.Clave);
+      console.log(claveId);
+  
+      // Almacena el ID_Clave en el estado
+      setID_Clave(claveId);
   
       // Luego, crea el administrador con el ID de la clave creada
       const administradorData = await createAdministrador({
         ...formData,
-        Clave: claveData.ID_Clave, // Asegúrate de que este es el nombre correcto del campo
-      });
+        Clave: claveId, // Usa el ID_Clave directamente
+      }); 
   
       console.log('Administrador creado:', administradorData);
     } catch (error) {
       console.error('Error:', error);
     }
   };
+  
   
 
   return (
@@ -128,9 +137,9 @@ function Registro() {
               required
             >
               <option value="">Seleccione su rol</option>
-              <option value="Directivo">Directivo</option>
-              <option value="Orientador">Orientador</option>
-              <option value="Docente">Docente</option>
+              <option value="1">Directivo</option>
+              <option value="2">Orientador</option>
+              <option value="3">Docente</option>
             </select>
           </div>
           <div className="mb-4">

@@ -3,14 +3,13 @@ import { Document, Page, pdfjs } from 'react-pdf';
 import 'react-pdf/dist/esm/Page/AnnotationLayer.css';
 import 'react-pdf/dist/esm/Page/TextLayer.css';
 
-// Configura pdfjs para usar el worker correcto
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
-const MyPdfViewer = ({ file }) => {
+const MyPdfViewer = ({ file, setShowPdf }) => {
   const [numPages, setNumPages] = useState(null);
-  const [error, setError] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1);
   const [pdfWidth, setPdfWidth] = useState(0);
-
+  const [scale, setScale] = useState(2.0); // Ajusta este valor al tamaño deseado
   const onDocumentLoadSuccess = ({ numPages }) => {
     setNumPages(numPages);
   };
@@ -22,45 +21,67 @@ const MyPdfViewer = ({ file }) => {
         const pdfBlob = await pdf.blob();
         const url = URL.createObjectURL(pdfBlob);
         const pdfDocument = await pdfjs.getDocument(url).promise;
-        const pdfPage = await pdfDocument.getPage(1); // Cargamos solo la primera página para obtener sus dimensiones
+        const pdfPage = await pdfDocument.getPage(1);
         const viewport = pdfPage.getViewport({ scale: 1 });
-        setPdfWidth(viewport.width); // Establecemos el ancho del PDF
+        setPdfWidth(viewport.width);
       } catch (error) {
         console.error('Error fetching PDF dimensions:', error);
-        setError(error);
       }
     };
 
     fetchPdfDimensions();
   }, [file]);
 
-  try {
-    return (
-      <div style={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
-        {pdfWidth !== 0 && (
-          <Document
-            file={file}
-            onLoadSuccess={onDocumentLoadSuccess}
-          >
-            {Array.from(
-              new Array(numPages),
-              (el, index) => (
-                <Page
-                  key={`page_${index + 1}`}
-                  pageNumber={index + 1}
-                  width={pdfWidth}
-                />
-              )
-            )}
-          </Document>
-        )}
+  const zoomIn = () => {
+    setScale(scale + 0.1);
+  };
+
+  const zoomOut = () => {
+    if (scale > 0.1) {
+      setScale(scale - 0.1);
+    }
+  };
+
+  const nextPage = () => {
+    if (currentPage < numPages) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
+
+  const prevPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
+
+  const backToMenu = () => {
+    setShowPdf(false);
+  };
+
+  return (
+    <div style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+      {pdfWidth !== 0 && (
+        <Document
+          file={file}
+          onLoadSuccess={onDocumentLoadSuccess}
+        >
+                <div style={{ display: 'flex', justifyContent: 'space-between', width: '50%', marginTop: '20px' }}>
+                <button style={{ padding: '10px', backgroundColor: '#3B82F6', color: 'white', border: 'none', borderRadius: '5px' }} onClick={backToMenu}>Volver al menú</button>
+        <button style={{ padding: '10px', backgroundColor: '#3B82F6', color: 'white', border: 'none', borderRadius: '5px' }} onClick={prevPage}>Página anterior</button>
+        <button style={{ padding: '10px', backgroundColor: '#3B82F6', color: 'white', border: 'none', borderRadius: '5px' }} onClick={nextPage}>Página siguiente</button>
+        
       </div>
-    );
-  } catch (err) {
-    setError(err);
-    console.error('Error loading PDF:', err);
-    return <div>Error loading PDF: {err.message}</div>;
-  }
+          <Page
+            pageNumber={currentPage}
+            width={pdfWidth * scale} // El ancho del PDF se multiplica por la escala
+          />
+        </Document>
+      )}
+    </div>
+  );
+  
+  
+  
 };
 
 export default MyPdfViewer;

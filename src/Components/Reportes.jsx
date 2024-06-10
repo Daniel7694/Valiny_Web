@@ -42,7 +42,7 @@ const Reportes = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('http://192.168.1.39:3000/api/porcentajes/porcentaje_registros');
+        const response = await axios.get('http://192.168.2.103:3000/api/porcentajes/porcentaje_registros');
         setStudents(response.data.data);
         renderBarChart(response.data.data);
         renderDonutChart(response.data.data);
@@ -57,7 +57,7 @@ const Reportes = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`http://192.168.1.39:3000/api/administradores/${userData.ID_Admin}`);
+        const response = await axios.get(`http://192.168.2.103:3000/api/administradores/${userData.ID_Admin}`);
         setAdmin(response.data.data);
   
       } catch (error) {
