@@ -1,8 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
-import { FaBars } from 'react-icons/fa';
-import { FaFileExcel } from 'react-icons/fa';
-import { FaFilePdf } from 'react-icons/fa';
+import { FaBars, FaFileExcel, FaFilePdf } from 'react-icons/fa';
 import Menu from './menú';
 import MyPdfViewer from './MyPdfViewer';
 import { PDFDownloadLink } from '@react-pdf/renderer';

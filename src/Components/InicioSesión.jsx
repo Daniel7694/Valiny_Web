@@ -85,7 +85,7 @@ function Inicio({ setToken }) {
               Contraseña:
             </label>
             <input
-              type="text" 
+              type="password" 
               maxLength="10" 
               pattern="\d*"
               id="contraseña"
