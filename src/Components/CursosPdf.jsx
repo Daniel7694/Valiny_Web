@@ -67,4 +67,8 @@ const CursosPdf = ({ students }) => {
 CursosPdf.propTypes = {
   students: PropTypes.array.isRequired,
 };
+
+CursosPdf.propTypes = {
+  students: PropTypes.array.isRequired,
+};
 export default CursosPdf;
