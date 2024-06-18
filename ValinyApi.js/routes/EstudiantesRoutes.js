@@ -7,7 +7,7 @@ module.exports = (app) => {
     app.delete('/api/estudiantes/:id', estudiantesController.delete); // Nueva ruta para eliminar un estudiante por su ID
    app.get('/api/estudiantes', estudiantesController.getAll);
    app.get('/api/porcentajes/porcentaje_registros', estudiantesController.getPorcentajeRegistros);
-   app.get('/api/estudiantes/tipo/:type', estudiantesController.getByAttendanceType);
+ 
 
    
 }

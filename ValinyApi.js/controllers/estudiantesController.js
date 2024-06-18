@@ -42,31 +42,7 @@
                 });
             });
         },
-        getByAttendanceType(req, res) {
-            const attendanceType = req.params.type; // Obtener el tipo de asistencia del parámetro de la URL
-            Estudiantes.getByAttendanceType(attendanceType, (err, data) => {
-                if (err) {
-                    return res.status(500).json({
-                        success: false,
-                        message: 'Hubo un error al buscar los estudiantes por tipo de asistencia',
-                        error: err
-                    });
-                }
-                if (!data.length) {
-                    return res.status(404).json({
-                        success: false,
-                        message: 'No se encontraron estudiantes con ese tipo de asistencia'
-                    });
-                }
-                return res.status(200).json({
-                    success: true,
-                    message: 'Estudiantes encontrados',
-                    data: data
-                });
-            });
-        },        
-
-        getAll(req, res) {
+                getAll(req, res) {
             Estudiantes.getAll((err, data) => {
                 if (err) {
                     return res.status(500).json({

@@ -62,23 +62,7 @@ Estudiantes.create = async (estudiantes, result) => {
             });
         };
 
-        Estudiantes.getByAttendanceType = (attendanceType, result) => {
-            const sql = 'SELECT * FROM Vista_Estu WHERE Registro = ?';
-            db.query(sql, [attendanceType], (err, res) => {
-                if (err) {
-                    console.log('Error al buscar los estudiantes: ', err);
-                    result(err, null);
-                    return;
-                }
-                if (res.length) {
-                    console.log('Estudiantes encontrados: ', res);
-                    result(null, res);
-                    return;
-                }
-                // Si no se encuentra ningún estudiante con ese tipo de asistencia
-                result({ message: 'No se encontraron estudiantes con ese tipo de asistencia' }, null);
-            });
-        };
+      
         
         Estudiantes.getAll = (result) => {
             const sql = 'SELECT * FROM cfgo_ied.vista_estu'; // Utilizamos la vista Vista_Estu en lugar de la tabla Estudiantes
