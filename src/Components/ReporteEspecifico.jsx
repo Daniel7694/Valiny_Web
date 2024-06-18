@@ -25,7 +25,7 @@ const ReporteEspecifico = ({ setToken }) => {
       try {
         const response = await axios.get("http://192.168.1.42:3000/api/estudiantes");
         console.log("Datos de estudiantes:", response.data);
-        setEstudiantes(response.data.data); // Asegúrate de que los datos se están guardando correctamente
+        setEstudiantes(response.data.data);
       } catch (error) {
         console.error("Error al cargar estudiantes:", error);
         setError("Error al cargar estudiantes");
@@ -38,7 +38,7 @@ const ReporteEspecifico = ({ setToken }) => {
   useEffect(() => {
     if (Array.isArray(estudiantes) && registroSeleccionado) {
       const studentsFilteredByStatus = estudiantes.filter(estudiante => {
-        console.log('Filtrando estudiante:', estudiante); // Verifica los datos de cada estudiante
+        console.log('Filtrando estudiante:', estudiante);
         return estudiante.Registro === estados[registroSeleccionado];
       });
       console.log('Estudiantes filtrados:', studentsFilteredByStatus);
@@ -98,17 +98,40 @@ const ReporteEspecifico = ({ setToken }) => {
         {filteredStudents.length === 0 && !error && (
           <p className="text-gray-500 mt-3">No se encontraron estudiantes para el estado seleccionado.</p>
         )}
-        <table className="min-w-full leading-normal">
-          <tbody>
-            {filteredStudents.map((estudiante) => (
-              <tr key={estudiante.Documento}>
-                <td>{estudiante.Documento}</td>
-                <td>{estudiante.Nombres}</td>
-                <td>{estudiante.Curso}</td>
+        <div className="inline-block min-w-full shadow rounded-lg overflow-y-auto h-96">
+          <table className="min-w-full leading-normal">
+            <thead>
+              <tr>
+                <th className="px-5 py-3 border-b-2 border-blue-200 bg-blue-200 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                  Número
+                </th>
+                <th className="px-5 py-3 border-b-2 border-blue-200 bg-blue-200 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                  Documento
+                </th>
+                <th className="px-5 py-3 border-b-2 border-blue-200 bg-blue-200 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                  Nombres
+                </th>
+                <th className="px-5 py-3 border-b-2 border-blue-200 bg-blue-200 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                  Tipo de documento
+                </th>
+                <th className="px-5 py-3 border-b-2 border-blue-200 bg-blue-200 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                  Curso
+                </th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {filteredStudents.map((estudiante, index) => (
+                <tr key={estudiante.Documento} className={index % 2 === 0 ? 'bg-white' : 'bg-blue-200'}>
+                  <td className="px-5 py-5 border-b border-gray-200 text-sm">{index + 1}</td>
+                  <td className="px-5 py-5 border-b border-gray-200 text-sm">{estudiante.Documento}</td>
+                  <td className="px-5 py-5 border-b border-gray-200 text-sm">{estudiante.Nombres}</td>
+                  <td className="px-5 py-5 border-b border-gray-200 text-sm">{estudiante.Tipo_de_documento}</td>
+                  <td className="px-5 py-5 border-b border-gray-200 text-sm">{estudiante.Curso}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );
