@@ -5,11 +5,11 @@ import Menu from './menú';
 import { FaBars } from 'react-icons/fa';
 
 const estados = {
-  'falla': 0,
-  'asiste': 1,
-  'retardo': 2,
-  'evasion': 3,
-  'falla-justificada': 4
+  'falla': 'Falla',
+  'asiste': 'Asiste',
+  'retardo': 'Retardo',
+  'evasion': 'Evacion',
+  'falla-justificada': 'Justificada'
 };
 
 const ReporteEspecifico = ({ setToken }) => {
@@ -17,57 +17,37 @@ const ReporteEspecifico = ({ setToken }) => {
   const [showPdf, setShowPdf] = useState(false);
   const [registroSeleccionado, setRegistroSeleccionado] = useState("");
   const [estudiantes, setEstudiantes] = useState([]);
+  const [filteredStudents, setFilteredStudents] = useState([]);
   const [error, setError] = useState(null);
 
   useEffect(() => {
     const cargarEstudiantes = async () => {
       try {
-        const response = await axios.get("http://192.168.2.103:3000/api/estudiantes");
-        console.log("Datos de estudiantes:", response.data); // Verificar datos de estudiantes recibidos
-  
-        // Verificar si los datos recibidos son un array
-        if (!Array.isArray(response.data)) {
-          // Si los datos no son un array, intentaremos convertirlos a un array
-          const estudiantesArray = Object.values(response.data); // Convertir el objeto a un array
-  
-          // Verificar si se pudo convertir a un array
-          if (!Array.isArray(estudiantesArray)) {
-            console.error("No se pudieron convertir los datos de estudiantes a un array:", response.data);
-            setError("Los datos de estudiantes no están en el formato esperado");
-            return;
-          }
-  
-          // Almacenar los datos de estudiantes convertidos en el estado
-          setEstudiantes(estudiantesArray);
-        } else {
-          // Almacenar los datos de estudiantes en el estado
-          setEstudiantes(response.data);
-        }
+        const response = await axios.get("http://192.168.1.42:3000/api/estudiantes");
+        console.log("Datos de estudiantes:", response.data);
+        setEstudiantes(response.data.data); // Asegúrate de que los datos se están guardando correctamente
       } catch (error) {
         console.error("Error al cargar estudiantes:", error);
         setError("Error al cargar estudiantes");
       }
     };
-  
+
     cargarEstudiantes();
   }, []);
-  
-  const filtrarEstudiantes = (tipo) => {
-    console.log("Tipo seleccionado:", tipo); // Verificar el tipo seleccionado
-    if (!Array.isArray(estudiantes)) {
-      console.error("Los datos de estudiantes no son un array:", estudiantes);
-      return []; // Devolver un array vacío si los datos no son válidos
+
+  useEffect(() => {
+    if (Array.isArray(estudiantes) && registroSeleccionado) {
+      const studentsFilteredByStatus = estudiantes.filter(estudiante => {
+        console.log('Filtrando estudiante:', estudiante); // Verifica los datos de cada estudiante
+        return estudiante.Registro === estados[registroSeleccionado];
+      });
+      console.log('Estudiantes filtrados:', studentsFilteredByStatus);
+      setFilteredStudents(studentsFilteredByStatus);
+    } else {
+      setFilteredStudents([]);
     }
-    return estudiantes.filter(estudiante => estudiante.Registro === tipo);
-  };
-  
-  
-  const handleReportTypeClick = (reportType) => {
-    console.log("Tipo seleccionado:", reportType); // Verificar el tipo seleccionado
-    setRegistroSeleccionado(reportType);
-    setError(null); // Resetear el error al cambiar de selección
-  };
-  
+  }, [estudiantes, registroSeleccionado]);
+
   const handleMenu = () => {
     setIsMenuOpen(true);
   };
@@ -79,6 +59,11 @@ const ReporteEspecifico = ({ setToken }) => {
   const handleInstructions = () => {
     setShowPdf(true);
     closeMenu();
+  };
+
+  const handleReportTypeClick = (tipo) => {
+    setRegistroSeleccionado(tipo);
+    setError(null);
   };
 
   if (showPdf) {
@@ -95,29 +80,35 @@ const ReporteEspecifico = ({ setToken }) => {
       <div>
         <h1 className="text-3xl font-bold mb-5">Reportes Diarios</h1>
         <ul className="space-y-2">
-        {Object.keys(estados).map((tipo) => (
-  <li
-    key={tipo}
-    className={`flex items-center cursor-pointer ${registroSeleccionado === tipo ? "text-blue-500" : ""}`}
-    onClick={() => handleReportTypeClick(tipo)}
-  >
-    <div className={`w-5 h-5 border-2 border-gray-400 rounded-full mr-2 ${registroSeleccionado === tipo ? "bg-blue-200 border-blue-200" : ""}`}></div>
-    {tipo.charAt(0).toUpperCase() + tipo.slice(1).replace('-', ' ')}
-  </li>
-))}
+          {Object.keys(estados).map((tipo) => (
+            <li
+              key={tipo}
+              className={`flex items-center cursor-pointer ${registroSeleccionado === tipo ? "text-blue-500" : ""}`}
+              onClick={() => handleReportTypeClick(tipo)}
+            >
+              <div className={`w-5 h-5 border-2 border-gray-400 rounded-full mr-2 ${registroSeleccionado === tipo ? "bg-blue-200 border-blue-200" : ""}`}></div>
+              {estados[tipo]}
+            </li>
+          ))}
         </ul>
       </div>
       <div className="border rounded-lg p-5 mt-5">
         <h2 className="text-2xl font-bold mb-3">Estudiantes:</h2>
         {error && <p className="text-red-500 mt-3">{error}</p>}
-        {estudiantes.length === 0 && !error && registroSeleccionado !== "" && (
+        {filteredStudents.length === 0 && !error && (
           <p className="text-gray-500 mt-3">No se encontraron estudiantes para el estado seleccionado.</p>
         )}
-        <ul className="space-y-2">
-        {filtrarEstudiantes(registroSeleccionado).map((estudiante) => (
-  <li key={estudiante.Documento} className="bg-gray-200 p-3 rounded">{estudiante['Nombres']}</li>
-))}
-        </ul>
+        <table className="min-w-full leading-normal">
+          <tbody>
+            {filteredStudents.map((estudiante) => (
+              <tr key={estudiante.Documento}>
+                <td>{estudiante.Documento}</td>
+                <td>{estudiante.Nombres}</td>
+                <td>{estudiante.Curso}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
     </div>
   );

@@ -6,7 +6,7 @@ import { FaBars } from 'react-icons/fa';
 function Registro() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [token, setToken] = useState(null);
-
+  const [successMessage, setSuccessMessage] = useState('');
   const [ID_Clave, setID_Clave] = useState(null);
 
   useEffect(() => {
@@ -40,7 +40,7 @@ function Registro() {
   });
 
   const createClave = async (clave) => {
-    const response = await fetch('http://192.168.2.103:3000/api/clave/create', {
+    const response = await fetch('http://192.168.1.42:3000/api/clave/create', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ Contrasenia: clave }),
@@ -51,13 +51,16 @@ function Registro() {
     }
   
     const data = await response.json();
-    return data.data.ID_Clave; // Devuelve solo el ID_Clave
+
+          setID_Clave(data); 
+    console.log(ID_Clave)
+    return data;
   };
   
   
   
   const createAdministrador = async (administrador) => {
-    const response = await fetch('http://192.168.2.103:3000/api/administradores/create', {
+    const response = await fetch('http://192.168.1.42:3000/api/administradores/create', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(administrador),
@@ -85,23 +88,29 @@ function Registro() {
   
     try {
       // Primero, crea la clave
-      const claveId = await createClave(formData.Clave);
-      console.log(claveId);
+      const claveData = await createClave(formData.Clave);
+      console.log(claveData); 
   
-      // Almacena el ID_Clave en el estado
-      setID_Clave(claveId);
+      // Extrae el ID de la clave
+      const claveId = claveData.data[0].ID_Clave;
+      console.log(claveId);
   
       // Luego, crea el administrador con el ID de la clave creada
       const administradorData = await createAdministrador({
         ...formData,
-        Clave: claveId, // Usa el ID_Clave directamente
+        Clave: claveId, // Usa el ID de la clave directamente
       }); 
   
       console.log('Administrador creado:', administradorData);
+  
+      // Muestra el mensaje de éxito
+      setSuccessMessage('Se ha creado un Administrador, exitosamente!');
     } catch (error) {
       console.error('Error:', error);
+      setSuccessMessage(''); // Limpia el mensaje de éxito en caso de error
     }
   };
+  
   
   
 
@@ -113,6 +122,7 @@ function Registro() {
             <FaBars size={40} />
           </button>
         <h2 className="text-2xl font-bold mb-6 text-center">Registro de Entidades</h2>
+
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
             <label htmlFor="ID_Admin" className="block text-gray-700">Numero de documento</label>
@@ -155,17 +165,21 @@ function Registro() {
             />
           </div>
           <div className="mb-4">
-            <label htmlFor="T_Documento" className="block text-gray-700">Tipo de Documento</label>
-            <input
-              type="text"
-              id="T_Documento"
-              name="T_Documento"
-              value={formData.T_Documento}
-              onChange={handleChange}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              required
-            />
-          </div>
+  <label htmlFor="T_Documento" className="block text-gray-700">Tipo de Documento</label>
+  <select
+    id="T_Documento"
+    name="T_Documento"
+    value={formData.T_Documento}
+    onChange={handleChange}
+    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+    required
+  >
+    <option value="">Seleccione el tipo de documento</option>
+    <option value="1">Cédula de Ciudadanía</option>
+    <option value="2">Cédula de Extranjería</option>
+  </select>
+</div>
+
           <div className="mb-4">
             <label htmlFor="P_Nombre" className="block text-gray-700">Primer Nombre</label>
             <input
@@ -234,10 +248,11 @@ function Registro() {
               required
             >
               <option value="">Seleccione su género</option>
-              <option value="Masculino">Masculino</option>
-              <option value="Femenino">Femenino</option>
+              <option value="1">Masculino</option>
+              <option value="2">Femenino</option>
             </select>
           </div>
+          {successMessage && <p className="text-green-500">{successMessage}</p>}
           <button
             type="submit"
             className="w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"

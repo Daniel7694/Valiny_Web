@@ -28,7 +28,7 @@ function Inicio({ setToken }) {
     };
   
     // Realizar la solicitud a la API
-    fetch('http://192.168.2.103:3000/api/administradores/authenticate', options)
+    fetch('http://192.168.1.42:3000/api/administradores/authenticate', options)
     .then((response) => response.json())
     .then((data) => {
       // Aquí puedes manejar la respuesta de la API
@@ -85,7 +85,7 @@ function Inicio({ setToken }) {
               Contraseña:
             </label>
             <input
-              type="text" 
+              type="password" 
               maxLength="10" 
               pattern="\d*"
               id="contraseña"

@@ -1,5 +1,6 @@
 import React from 'react';
 import { Document, Page, Text, View, StyleSheet } from '@react-pdf/renderer';
+import PropTypes from 'prop-types';
 
 const styles = StyleSheet.create({
   page: { padding: 30 },
@@ -63,4 +64,7 @@ const CursosPdf = ({ students }) => {
   );
 };
 
+CursosPdf.propTypes = {
+  students: PropTypes.array.isRequired,
+};
 export default CursosPdf;

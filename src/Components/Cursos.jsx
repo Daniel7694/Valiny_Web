@@ -38,7 +38,7 @@ const Cursos = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('http://192.168.2.103:3000/api/estudiantes');
+        const response = await axios.get('http://192.168.1.42:3000/api/estudiantes');
         setStudents(response.data.data);
       } catch (error) {
         console.error('Error fetching data: ', error);
@@ -52,7 +52,7 @@ const Cursos = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`http://192.168.2.103:3000/api/administradores/${userData.ID_Admin}`);
+        const response = await axios.get(`http://192.168.1.42:3000/api/administradores/${userData.ID_Admin}`);
         setAdmin(response.data.data);
   
       } catch (error) {
@@ -86,8 +86,7 @@ const Cursos = () => {
   console.log('showPdf:', showPdf); // Agregamos un console.log aquí para verificar el valor de showPdf
 
   if (showPdf) {
-    console.log('showPdf is true'); // Agregamos un console.log aquí para verificar si el bloque condicional se está ejecutando
-    return <MyPdfViewer file="/ManualDeInstruccionesValiny.pdf" />;
+    return <MyPdfViewer file="/ManualDeInstruccionesValiny.pdf" setShowPdf={setShowPdf} />;
   }
   const filteredStudents = students.filter(student => student.Curso === selectedCourse); // Filtra estudiantes por el curso seleccionado
 
