@@ -9,6 +9,9 @@ const cors = require('cors');
 const estudiantesRoutes = require('./routes/EstudiantesRoutes');
 const administradoresRoutes = require('./routes/AdministradoresRoutes'); // Importar las rutas de administradores
 const clavesRoutes = require('./routes/ClavesRoutes');
+const cursosRoutes = require('./routes/CursosRoutes');
+
+
 
 const port = process.env.PORT || 3000; 
 
@@ -25,6 +28,8 @@ app.set('port', port);
 estudiantesRoutes(app); // Usar las rutas de estudiantes
 administradoresRoutes(app); // Usar las rutas de administradores
 clavesRoutes(app); // Usar las rutas de las claves
+cursosRoutes(app); // Usar las rutas de los cursos
+
 
 app.get('/', (req, res) => { 
  res.send('Ruta raíz del Backend');
