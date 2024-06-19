@@ -12,7 +12,7 @@
       table.string('S_Apellido', 20);
       table.integer('Genero').notNullable().references('ID_Genero').inTable('Genero');
       table.integer('T_Documento').notNullable().references('ID_Documento').inTable('T_Documento');
-      table.integer('Curso').notNullable().references('ID_Curso').inTable('Cursos');
+      table.integer('Curso').unsigned().notNullable().references('ID_Curso').inTable('Cursos');
       table.integer('Administradores').notNullable().references('ID_Admin').inTable('Administradores');
       table.integer('Registro').notNullable().references('ID_Registro').inTable('Registro');
     });

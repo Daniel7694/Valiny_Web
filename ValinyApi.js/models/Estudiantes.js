@@ -2,6 +2,7 @@ const db = require('../config/config');
 
 
 const Estudiantes = {};
+
 Estudiantes.create = async (estudiantes, result) => {
     const sql =
         `INSERT INTO Estudiantes (

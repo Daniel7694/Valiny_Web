@@ -24,6 +24,8 @@ const Cursos = () => {
 
   const [token, setToken] = useState(null);
 
+  const [showCreateCourse, setShowCreateCourse] = useState(false); // Estado para controlar la visibilidad del formulario de creación de curso
+  const [newCourseNumber, setNewCourseNumber] = useState(''); // Estado para almacenar el número del nuevo curso
   useEffect(() => {
     const storedToken = localStorage.getItem('token');
 
@@ -82,6 +84,16 @@ const Cursos = () => {
   };
 
   console.log('showPdf:', showPdf); // Agregamos un console.log aquí para verificar el valor de showPdf
+  const handleCreateCourseClick = () => {
+    setShowCreateCourse(true);
+  };
+
+  const handleCreateCourse = () => {
+    // Aquí puedes añadir la lógica para crear el curso, por ejemplo, enviar el número de curso a una API
+    console.log('Creando curso:', newCourseNumber);
+    setShowCreateCourse(false);
+    setNewCourseNumber('');
+  };
 
   if (showPdf) {
     return <MyPdfViewer file="/ManualDeInstruccionesValiny.pdf" setShowPdf={setShowPdf} />;
@@ -112,6 +124,33 @@ const Cursos = () => {
               <option value="503">Curso 503</option>
             </select>
           </div>
+          <div className="mb-4">
+            <button
+              onClick={handleCreateCourseClick}
+              className="bg-blue-500 text-white px-4 py-2 rounded"
+            >
+              Crear nuevo curso
+            </button>
+          </div>
+          {showCreateCourse && (
+            <div className="mb-4">
+              <label htmlFor="newCourseNumber" className="text-lg font-semibold mb-2">Número del nuevo curso:</label>
+              <input
+                id="newCourseNumber"
+                type="text"
+                value={newCourseNumber}
+                onChange={(e) => setNewCourseNumber(e.target.value)}
+                className="border border-gray-300 rounded px-2 py-1 mr-2"
+              />
+              <button
+                onClick={handleCreateCourse}
+                className="bg-green-500 text-white px-4 py-2 rounded"
+              >
+                Confirmar
+              </button>
+            </div>
+                      )}
+
           <div className="inline-block min-w-full shadow rounded-lg overflow-y-auto h-96">
             <table className="min-w-full leading-normal">
               <thead>
