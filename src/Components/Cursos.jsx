@@ -37,7 +37,7 @@ const Cursos = () => {
   useEffect(() => {
     const fetchStudents = async () => {
       try {
-        const response = await axios.get('http://192.168.1.42:3000/api/estudiantes');
+        const response = await axios.get('http://192.168.20.23:3000/api/estudiantes');
         setStudents(response.data.data);
       } catch (error) {
         console.error('Error fetching data: ', error);
@@ -50,7 +50,7 @@ const Cursos = () => {
   useEffect(() => {
     const fetchAdmin = async () => {
       try {
-        const response = await axios.get(`http://192.168.1.42:3000/api/administradores/${userData.ID_Admin}`);
+        const response = await axios.get(`http://192.168.20.23:3000/api/administradores/${userData.ID_Admin}`);
         setAdmin(response.data.data);
       } catch (error) {
         console.error('Error fetching data: ', error);
@@ -63,7 +63,7 @@ const Cursos = () => {
   useEffect(() => {
     const fetchCourses = async () => {
       try {
-        const response = await axios.get('http://192.168.1.42:3000/api/cursos');
+        const response = await axios.get('http://192.168.20.23:3000/api/cursos');
         const sortedCourses = response.data.data.sort((a, b) => a.Num_Curso - b.Num_Curso);
         setCourses(sortedCourses);
       } catch (error) {
@@ -103,7 +103,7 @@ const Cursos = () => {
     const courseData = { Num_Curso: newCourseNumber };
 
     try {
-      const response = await axios.post('http://192.168.1.42:3000/api/cursos/create', courseData);
+      const response = await axios.post('http://192.168.20.23:3000/api/cursos/create', courseData);
       console.log('Curso creado:', response.data);
       setMessage('Curso creado correctamente');
       setCourses([...courses, courseData]);
@@ -131,7 +131,7 @@ const Cursos = () => {
     const updatedCourseData = { ID_Curso: editCourseNumber };
 
     try {
-      const response = await axios.put(`http://192.168.1.42:3000/api/cursos/${courseToEdit.ID_Curso}`, updatedCourseData);
+      const response = await axios.put(`http://192.168.20.23:3000/api/cursos/${courseToEdit.ID_Curso}`, updatedCourseData);
       console.log('Curso actualizado:', response.data);
       setMessage('Curso actualizado correctamente');
       setCourses(courses.map(course => (course.ID_Curso === courseToEdit.ID_Curso ? updatedCourseData : course)));
@@ -151,7 +151,7 @@ const Cursos = () => {
 
   const handleDeleteCourse = async (courseNum) => {
     try {
-      await axios.delete(`http://192.168.1.42:3000/api/cursos/${courseNum}`);
+      await axios.delete(`http://192.168.20.23:3000/api/cursos/${courseNum}`);
       console.log('Curso eliminado:', courseNum);
       setMessage('Curso eliminado correctamente');
       setCourses(courses.filter(course => course.Num_Curso !== courseNum));
