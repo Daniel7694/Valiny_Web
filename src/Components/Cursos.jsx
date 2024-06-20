@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
-import { FaBars, FaFileExcel, FaFilePdf } from 'react-icons/fa';
+import { FaBars, FaFileExcel, FaFilePdf, FaEdit, FaTrash } from 'react-icons/fa';
 import Menu from './menú';
 import MyPdfViewer from './MyPdfViewer';
 import { PDFDownloadLink } from '@react-pdf/renderer';
@@ -11,34 +11,31 @@ import { UserContext } from '../App';
 
 const Cursos = () => {
   const [students, setStudents] = useState([]);
+  const [courses, setCourses] = useState([]);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [showPdf, setShowPdf] = useState(false);
-  const [selectedCourse, setSelectedCourse] = useState('501'); // Estado para almacenar el curso seleccionado
+  const [selectedCourse, setSelectedCourse] = useState('501');
   const [admin, setAdmin] = useState([]);
   const { userData } = useContext(UserContext);
-
-  console.log(userData.ID_Admin);
-
-  const fecha = new Date();
-  const fechaFormateada = `${fecha.getDate()}-${fecha.getMonth() + 1}-${fecha.getFullYear()}`;
-
   const [token, setToken] = useState(null);
 
-  const [showCreateCourse, setShowCreateCourse] = useState(false); // Estado para controlar la visibilidad del formulario de creación de curso
-  const [newCourseNumber, setNewCourseNumber] = useState(''); // Estado para almacenar el número del nuevo curso
-  const [message, setMessage] = useState(''); // Estado para almacenar el mensaje de éxito o error
+  const [showCreateCourse, setShowCreateCourse] = useState(false);
+  const [newCourseNumber, setNewCourseNumber] = useState('');
+  const [message, setMessage] = useState('');
+  const [editCourseNumber, setEditCourseNumber] = useState('');
+  const [courseToEdit, setCourseToEdit] = useState(null);
+
+  const [confirmDelete, setConfirmDelete] = useState(false);
 
   useEffect(() => {
     const storedToken = localStorage.getItem('token');
-
     if (storedToken) {
       setToken(storedToken);
-      console.log(token);
     }
-  }, [token]);
+  }, []);
 
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchStudents = async () => {
       try {
         const response = await axios.get('http://192.168.1.42:3000/api/estudiantes');
         setStudents(response.data.data);
@@ -47,11 +44,11 @@ const Cursos = () => {
       }
     };
 
-    fetchData();
+    fetchStudents();
   }, []);
 
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchAdmin = async () => {
       try {
         const response = await axios.get(`http://192.168.1.42:3000/api/administradores/${userData.ID_Admin}`);
         setAdmin(response.data.data);
@@ -60,7 +57,21 @@ const Cursos = () => {
       }
     };
 
-    fetchData();
+    fetchAdmin();
+  }, [userData.ID_Admin]);
+
+  useEffect(() => {
+    const fetchCourses = async () => {
+      try {
+        const response = await axios.get('http://192.168.1.42:3000/api/cursos');
+        const sortedCourses = response.data.data.sort((a, b) => a.Num_Curso - b.Num_Curso);
+        setCourses(sortedCourses);
+      } catch (error) {
+        console.error('Error fetching courses: ', error);
+      }
+    };
+
+    fetchCourses();
   }, []);
 
   const handleMenu = () => {
@@ -80,38 +91,84 @@ const Cursos = () => {
 
   const handleInstructions = () => {
     setShowPdf(true);
-    setIsMenuOpen(false); // Cierra el menú cuando se abre el PDF
-    console.log('showPdf:', showPdf);
+    setIsMenuOpen(false);
   };
 
-  console.log('showPdf:', showPdf); // Agregamos un console.log aquí para verificar el valor de showPdf
   const handleCreateCourseClick = () => {
-    setShowCreateCourse(true);
+    setShowCreateCourse(!showCreateCourse);
+    setCourseToEdit(null);
   };
 
   const handleCreateCourse = async () => {
-    const courseData = {
-      Num_Curso: newCourseNumber, // Usar el valor del nuevo curso
-    };
+    const courseData = { Num_Curso: newCourseNumber };
 
     try {
       const response = await axios.post('http://192.168.1.42:3000/api/cursos/create', courseData);
       console.log('Curso creado:', response.data);
       setMessage('Curso creado correctamente');
+      setCourses([...courses, courseData]);
       setShowCreateCourse(false);
       setNewCourseNumber('');
-      setTimeout(() => setMessage(''), 5000); // Limpiar el mensaje después de 5 segundos
+      setTimeout(() => setMessage(''), 5000);
     } catch (error) {
       console.error('Error al crear el curso:', error);
       setMessage('Error al crear el curso');
-      setTimeout(() => setMessage(''), 5000); // Limpiar el mensaje después de 5 segundos
+      setTimeout(() => setMessage(''), 5000);
+    }
+  };
+
+  const handleEditCourseClick = (course) => {
+    if (courseToEdit && courseToEdit.ID_Curso === course.ID_Curso) {
+      setCourseToEdit(null);
+    } else {
+      setCourseToEdit(course);
+      setEditCourseNumber(course.ID_Curso);
+    }
+    setShowCreateCourse(false);
+  };
+
+  const handleUpdateCourse = async () => {
+    const updatedCourseData = { ID_Curso: editCourseNumber };
+
+    try {
+      const response = await axios.put(`http://192.168.1.42:3000/api/cursos/${courseToEdit.ID_Curso}`, updatedCourseData);
+      console.log('Curso actualizado:', response.data);
+      setMessage('Curso actualizado correctamente');
+      setCourses(courses.map(course => (course.ID_Curso === courseToEdit.ID_Curso ? updatedCourseData : course)));
+      setCourseToEdit(null);
+      setEditCourseNumber('');
+      setTimeout(() => setMessage(''), 5000);
+    } catch (error) {
+      console.error('Error al actualizar el curso:', error);
+      setMessage('Error al actualizar el curso');
+      setTimeout(() => setMessage(''), 5000);
+    }
+  };
+
+  const handleDeleteCourseClick = () => {
+    setConfirmDelete(!confirmDelete);
+  };
+
+  const handleDeleteCourse = async (courseNum) => {
+    try {
+      await axios.delete(`http://192.168.1.42:3000/api/cursos/${courseNum}`);
+      console.log('Curso eliminado:', courseNum);
+      setMessage('Curso eliminado correctamente');
+      setCourses(courses.filter(course => course.Num_Curso !== courseNum));
+      setConfirmDelete(false);
+      setTimeout(() => setMessage(''), 5000);
+    } catch (error) {
+      console.error('Error al eliminar el curso:', error);
+      setMessage('Error al eliminar el curso');
+      setTimeout(() => setMessage(''), 5000);
     }
   };
 
   if (showPdf) {
     return <MyPdfViewer file="/ManualDeInstruccionesValiny.pdf" setShowPdf={setShowPdf} />;
   }
-  const filteredStudents = students.filter(student => student.Curso === selectedCourse); // Filtra estudiantes por el curso seleccionado
+
+  const filteredStudents = students.filter(student => student.Curso === selectedCourse);
 
   return (
     <div className="relative container mx-auto px-4 sm:px-8">
@@ -124,7 +181,7 @@ const Cursos = () => {
           <h2 className='text-5xl text-center mb-5 px-96'>Lista de cursos</h2>
         </div>
         <div className="-mx-4 sm:-mx-8 px-4 sm:px-8 py-4 overflow-x-auto">
-          <div className="mb-4">
+          <div className="mb-4 flex items-center space-x-4">
             <label htmlFor="curso" className="text-lg font-semibold mb-4">Seleccione un curso:</label>
             <select
               id="curso"
@@ -132,19 +189,29 @@ const Cursos = () => {
               onChange={(e) => setSelectedCourse(e.target.value)}
               className="border border-gray-300 rounded px-2 py-1"
             >
-              <option value="501">Curso 501</option>
-              <option value="502">Curso 502</option>
-              <option value="503">Curso 503</option>
-              <option value="504">Curso 504</option>
-
+              {courses.map(course => (
+                <option key={course.Num_Curso} value={course.Num_Curso}>
+                  Curso {course.Num_Curso}
+                </option>
+              ))}
             </select>
-          </div>
-          <div className="mb-4">
             <button
               onClick={handleCreateCourseClick}
               className="bg-blue-500 text-white px-4 py-2 rounded"
             >
               Crear nuevo curso
+            </button>
+            <button
+              onClick={() => handleEditCourseClick({ Num_Curso: selectedCourse })}
+              className="text-yellow-500 hover:text-yellow-700 mr-2"
+            >
+              <FaEdit />
+            </button>
+            <button
+              onClick={handleDeleteCourseClick}
+              className="text-red-500 hover:text-red-700"
+            >
+              <FaTrash />
             </button>
           </div>
           {showCreateCourse && (
@@ -163,6 +230,42 @@ const Cursos = () => {
                 className="bg-green-500 text-white px-4 py-2 rounded"
               >
                 Confirmar
+              </button>
+            </div>
+          )}
+          {courseToEdit && (
+            <div className="mb-4">
+              <label htmlFor="editCourseNumber" className="text-lg font-semibold mb-2">Editar número del curso:</label>
+              <input
+                id="editCourseNumber"
+                type="number"
+                maxLength={4}
+                value={editCourseNumber}
+                onChange={(e) => setEditCourseNumber(e.target.value)}
+                className="border border-gray-300 rounded px-2 py-1 mr-2"
+              />
+              <button
+                onClick={handleUpdateCourse}
+                className="bg-yellow-500 text-white px-4 py-2 rounded"
+              >
+                Actualizar
+              </button>
+            </div>
+          )}
+          {confirmDelete && (
+            <div className="mb-4">
+              <p className="text-lg font-semibold mb-2">¿Está seguro de eliminar el curso {selectedCourse}?</p>
+              <button
+                onClick={() => handleDeleteCourse(selectedCourse)}
+                className="bg-red-500 text-white px-4 py-2 rounded mr-2"
+              >
+                Sí, eliminar
+              </button>
+              <button
+                onClick={handleDeleteCourseClick}
+                className="bg-gray-500 text-white px-4 py-2 rounded"
+              >
+                Cancelar
               </button>
             </div>
           )}
@@ -207,7 +310,7 @@ const Cursos = () => {
               <h2>Descargar en:</h2>
               <div className="flex justify-center space-x-10 mt-10">
                 <div className="flex flex-col items-center">
-                  <PDFDownloadLink document={<CursosPdf students={filteredStudents} />} fileName={`Registro_de_lista_de_cursos-${fechaFormateada}.pdf`}>
+                  <PDFDownloadLink document={<CursosPdf students={filteredStudents} />} fileName={`Registro_de_lista_de_cursos-${new Date().toISOString().split('T')[0]}.pdf`}>
                     {({ blob, url, loading, error }) =>
                       loading ? 'Cargando documento...' : <FaFilePdf size={50} color="red" />
                     }
@@ -215,7 +318,7 @@ const Cursos = () => {
                   <span>PDF</span>
                 </div>
                 <div className="flex flex-col items-center">
-                  <button onClick={() => exportarAExcel(filteredStudents, `Lista_de_cursos_${fechaFormateada}`)}>
+                  <button onClick={() => exportarAExcel(filteredStudents, `Lista_de_cursos_${new Date().toISOString().split('T')[0]}`)}>
                     <FaFileExcel size={50} color="green" />
                   </button>
                   <span>Excel</span>

@@ -23,20 +23,7 @@ exports.seed = function(knex) {
           { ID_Curso: 19, Num_Curso: '403' },
           { ID_Curso: 20, Num_Curso: '501' },
           { ID_Curso: 21, Num_Curso: '502' },
-          { ID_Curso: 22, Num_Curso: '503' },
-          { ID_Curso: 23, Num_Curso: '601' },
-          { ID_Curso: 24, Num_Curso: '602' },
-          { ID_Curso: 25, Num_Curso: '701' },
-          { ID_Curso: 26, Num_Curso: '702' },
-          { ID_Curso: 27, Num_Curso: '801' },
-          { ID_Curso: 28, Num_Curso: '802' },
-          { ID_Curso: 29, Num_Curso: '901' },
-          { ID_Curso: 30, Num_Curso: '902' },
-          { ID_Curso: 31, Num_Curso: '1001' },
-          { ID_Curso: 32, Num_Curso: '1002' },
-          { ID_Curso: 33, Num_Curso: '1101' },
-          { ID_Curso: 34, Num_Curso: '1102' }
-
+          { ID_Curso: 22, Num_Curso: '503' }
         ]);
       });
   };
