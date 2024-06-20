@@ -195,6 +195,9 @@ const Cursos = () => {
                 </option>
               ))}
             </select>
+
+            {admin && admin.Rol === 'SuperAdmin' && (
+            <>
             <button
               onClick={handleCreateCourseClick}
               className="bg-blue-500 text-white px-4 py-2 rounded"
@@ -213,6 +216,7 @@ const Cursos = () => {
             >
               <FaTrash />
             </button>
+            </>)}
           </div>
           {showCreateCourse && (
             <div className="mb-4">
