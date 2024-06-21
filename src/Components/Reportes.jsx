@@ -66,7 +66,7 @@ const Reportes = () => {
     };
   
       fetchData();
-    }, []);
+    }, [userData]);
 
     const handleEspecificos = () => {
       navigate('/ReporteEspecifico');

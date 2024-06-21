@@ -13,6 +13,8 @@
   "author": "Jean Pierre Daniel Nieto Gaona",
   "license": "MIT",
   "dependencies": {
+    "@fortawesome/free-solid-svg-icons": "^6.5.2",
+    "@fortawesome/react-fontawesome": "^0.2.2",
     "axios": "^1.6.8",
     "chai": "^4.4.1",
     "cors": "^2.8.5",
