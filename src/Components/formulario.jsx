@@ -2,12 +2,15 @@ import React, { useEffect, useState } from 'react';
 import '../index.css'; // Asegúrate de importar el archivo CSS correcto
 import Menu from './menú';
 import { FaBars } from 'react-icons/fa';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 
 function Registro() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [token, setToken] = useState(null);
   const [successMessage, setSuccessMessage] = useState('');
   const [ID_Clave, setID_Clave] = useState(null);
+  const [mostrarContraseña, setMostrarContraseña] = useState(false); // Nuevo estado para mostrar/ocultar contraseña
 
   useEffect(() => {
     const storedToken = localStorage.getItem('token');
@@ -151,17 +154,24 @@ function Registro() {
               <option value="3">Docente</option>
             </select>
           </div>
-          <div className="mb-4">
+          <div className="mb-4 relative">
             <label htmlFor="Clave" className="block text-gray-700">Clave</label>
             <input
-              type="password"
+              type={mostrarContraseña ? 'text' : 'password'} // Cambia el tipo de input dinámicamente
               id="Clave"
               name="Clave"
               value={formData.Clave}
               onChange={handleChange}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 pr-10" // Espacio para el botón de ojo
               required
             />
+            <button
+              type="button"
+              className="absolute inset-y-0 right-0 pr-3 flex items-center"
+              onClick={() => setMostrarContraseña(!mostrarContraseña)}
+            >
+              <FontAwesomeIcon icon={mostrarContraseña ? faEyeSlash : faEye} />
+            </button>
           </div>
           <div className="mb-4">
             <label htmlFor="T_Documento" className="block text-gray-700">Tipo de Documento</label>
