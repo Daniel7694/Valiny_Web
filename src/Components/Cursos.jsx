@@ -491,6 +491,9 @@ const Cursos = () => {
                   <th className="px-5 py-3 border-b-2 border-blue-200 bg-blue-200 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider font-family: ui-serif, Georgia, Cambria, Times New Roman Times, serif">
                     Registro de Asistencia
                   </th>
+                  <th className="px-5 py-3 border-b-2 border-blue-200 bg-blue-200 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider font-family: ui-serif, Georgia, Cambria, Times New Roman Times, serif">
+                    Editar Registo
+                  </th>
                 </tr>
               </thead>
               <tbody>
@@ -500,6 +503,12 @@ const Cursos = () => {
                     <td className="px-5 py-5 border-b border-gray-200 text-sm font-family: ui-serif, Georgia, Cambria, Times New Roman Times, serif">{student.Documento}</td>
                     <td className="px-5 py-5 border-b border-gray-200 text-sm font-family: ui-serif, Georgia, Cambria, Times New Roman Times, serif">{student.Nombres}</td>
                     <td className="px-5 py-5 border-b border-gray-200 text-sm font-family: ui-serif, Georgia, Cambria, Times New Roman Times, serif">{student.Registro}</td>
+                     <td className="px-5 py-5 border-b border-gray-200 text-sm font-family: ui-serif, Georgia, Cambria, Times New Roman Times, serif">                    <button
+              onClick={() => handleEditCourseClick([student.Documento])}
+              className="text-yellow-500 hover:text-yellow-700 mr-2"
+            >
+              <FaEdit />
+            </button></td>
                   </tr>
                 ))}
               </tbody>

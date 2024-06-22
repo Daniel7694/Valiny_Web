@@ -3,7 +3,7 @@
  * @returns { Promise<void> }
  */
 
- exports.up = function(knex) {
+exports.up = function(knex) {
     return knex.raw(`
       CREATE VIEW Vista_Estu AS
       SELECT 
@@ -26,4 +26,3 @@
   exports.down = function(knex) {
     return knex.raw('DROP VIEW Vista_Estu;');
   };
-  

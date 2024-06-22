@@ -2,7 +2,7 @@
  * @param { import("knex").Knex } knex
  * @returns { Promise<void> }
  */
- exports.up = function(knex) {
+exports.up = function(knex) {
     return knex.schema.createTable('Administradores', function(table) {
       table.integer('ID_Admin').primary();
       table.integer('Rol').notNullable().references('ID_Rol').inTable('Rol');
@@ -14,6 +14,7 @@
       table.string('P_Apellido', 20).notNullable();
       table.string('S_Apellido', 20);
       table.integer('Genero').notNullable().references('ID_Genero').inTable('Genero');
+      table.integer('Curso').unsigned().references('ID_Curso').inTable('Cursos');
     });
   };
   
