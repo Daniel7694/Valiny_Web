@@ -72,6 +72,7 @@ const Cursos = () => {
       try {
         const response = await axios.get(`http://192.168.1.42:3000/api/administradores/${userData.ID_Admin}`);
         setAdmin(response.data.data);
+
       } catch (error) {
         console.error('Error fetching data: ', error);
       }
@@ -79,7 +80,14 @@ const Cursos = () => {
 
     fetchAdmin();
   }, [userData.ID_Admin]);
+  
+  useEffect(() => {
+    if (admin.Rol === 'Docente') {
+      setSelectedCourse(admin.Curso);
+    }
+  }, [admin.Rol, admin.Curso]);
 
+  
   useEffect(() => {
     const fetchCourses = async () => {
       try {
@@ -264,6 +272,12 @@ const Cursos = () => {
         </div>
         <div className="-mx-4 sm:-mx-8 px-4 sm:px-8 py-4 overflow-x-auto">
           <div className="mb-4 flex items-center space-x-4">
+{admin && admin.Rol === 'Docente' && (
+  
+  <p>Curso: {selectedCourse}</p>
+)}
+          {admin && admin.Rol !== 'Docente' && (
+            <>
             <label htmlFor="curso" className="text-lg font-semibold mb-4">Seleccione un curso:</label>
             <select
               id="curso"
@@ -277,6 +291,7 @@ const Cursos = () => {
                 </option>
               ))}
             </select>
+            </>)}
 
             {admin && admin.Rol === 'SuperAdmin' && (
             <>
@@ -299,12 +314,15 @@ const Cursos = () => {
               <FaTrash />
             </button>
             </>)}
+            {admin && admin.Rol === 'SuperAdmin' && (
+            <>
             <button
               onClick={handleCreateStudentClick}
               className="bg-green-500 text-white px-4 py-2 rounded"
             >
               Crear nuevo estudiante
             </button>
+            </>)}
           </div>
           {showCreateCourse && (
             <div className="mb-4">
