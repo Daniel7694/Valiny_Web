@@ -24,8 +24,9 @@ Administradores.create = async (administrador, result) => {
                     T_Nombre,
                     P_Apellido,
                     S_Apellido,
-                    Genero
-                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+                    Genero,
+                    Curso
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
 
     db.query(sql, [
         administrador.ID_Admin,
@@ -37,7 +38,8 @@ Administradores.create = async (administrador, result) => {
         administrador.T_Nombre,
         administrador.P_Apellido,
         administrador.S_Apellido,
-        administrador.Genero
+        administrador.Genero,
+        administrador.Curso
     ], (err, res) => {
         if (err) {
             console.log('Error al crear el administrador: ', err);
