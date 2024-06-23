@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from 'react';
 import axios from "axios";
 import MyPdfViewer from './MyPdfViewer';
 import Menu from './menú';
 import { FaBars } from 'react-icons/fa';
+import { UserContext } from '../App';
 
 const estados = {
   'falla': 'Falla',
@@ -19,6 +20,8 @@ const ReporteEspecifico = ({ setToken }) => {
   const [estudiantes, setEstudiantes] = useState([]);
   const [filteredStudents, setFilteredStudents] = useState([]);
   const [error, setError] = useState(null);
+  const { userData } = useContext(UserContext);
+  const [admin, setAdmin] = useState(null);
 
   useEffect(() => {
     const cargarEstudiantes = async () => {
@@ -36,17 +39,31 @@ const ReporteEspecifico = ({ setToken }) => {
   }, []);
 
   useEffect(() => {
-    if (Array.isArray(estudiantes) && registroSeleccionado) {
-      const studentsFilteredByStatus = estudiantes.filter(estudiante => {
+    const fetchAdmin = async () => {
+      try {
+        const response = await axios.get(`http://192.168.2.108:3000/api/administradores/${userData.ID_Admin}`);
+        setAdmin(response.data.data);
+        console.log("Datos del admin:", response.data.data);
+      } catch (error) {
+        console.error('Error fetching data: ', error);
+      }
+    };
+
+    fetchAdmin();
+  }, [userData.ID_Admin]);
+
+  useEffect(() => {
+    if (Array.isArray(estudiantes) && registroSeleccionado && admin) {
+      const studentsFilteredByStatusAndCourse = estudiantes.filter(estudiante => {
         console.log('Filtrando estudiante:', estudiante);
-        return estudiante.Registro === estados[registroSeleccionado];
+        return estudiante.Registro === estados[registroSeleccionado] && estudiante.Curso === admin.Curso;
       });
-      console.log('Estudiantes filtrados:', studentsFilteredByStatus);
-      setFilteredStudents(studentsFilteredByStatus);
+      console.log('Estudiantes filtrados:', studentsFilteredByStatusAndCourse);
+      setFilteredStudents(studentsFilteredByStatusAndCourse);
     } else {
       setFilteredStudents([]);
     }
-  }, [estudiantes, registroSeleccionado]);
+  }, [estudiantes, registroSeleccionado, admin]);
 
   const handleMenu = () => {
     setIsMenuOpen(true);
