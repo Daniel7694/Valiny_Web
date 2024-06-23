@@ -23,8 +23,9 @@ const Cursos = () => {
   const [newCourseNumber, setNewCourseNumber] = useState('');
   const [message, setMessage] = useState('');
   const [editCourseNumber, setEditCourseNumber] = useState('');
+  const [editstudentNumber, setEditstudentNumber] = useState('');
   const [courseToEdit, setCourseToEdit] = useState(null);
-
+  const [studentToEdit, setstudentToEdit] = useState(null);
   const [confirmDelete, setConfirmDelete] = useState(false);
 
   // Estado para la creación de estudiantes
@@ -175,6 +176,35 @@ const Cursos = () => {
     } catch (error) {
       console.error('Error al actualizar el curso:', error);
       setMessage('Error al actualizar el curso');
+      setTimeout(() => setMessage(''), 5000);
+    }
+  };
+
+
+  const handleEditstudentClick = (student) => {
+    if (studentToEdit && studentToEdit.Documento === student.Documento) {
+      setstudentToEdit(null);
+    } else {
+      setstudentToEdit(student);
+      setEditstudentNumber(student.Documento);
+    }
+    setShowCreateStudent(false);
+  };
+
+  const handleUpdatestudent = async () => {
+    const updatedstudentData = { Registro: editstudentNumber };
+
+    try {
+      const response = await axios.put(`http://192.168.2.108:3000/api/estudiantes/${studentToEdit.Documento}`, updatedstudentData);
+      console.log('Estudiante actualizado:', response.data);
+      setMessage('Estudiante actualizado correctamente');
+      setStudents(students.map(student => (student.Documento === studentToEdit.Documento ? updatedstudentData : student)));
+      setstudentToEdit(null);
+      setEditstudentNumber('');
+      setTimeout(() => setMessage(''), 5000);
+    } catch (error) {
+      console.error('Error al actualizar el Estudiante:', error);
+      setMessage('Error al actualizar el Estudiante');
       setTimeout(() => setMessage(''), 5000);
     }
   };
@@ -362,6 +392,30 @@ const Cursos = () => {
               </button>
             </div>
           )}
+          {studentToEdit && (
+  <div className="mb-4">
+    <label htmlFor="editCourseNumber" className="text-lg font-semibold mb-2">Editar estado del estudiante:</label>
+    <select
+      id="editCourseNumber"
+      value={editstudentNumber}
+      onChange={(e) => setEditstudentNumber(e.target.value)}
+      className="border border-gray-300 rounded px-2 py-1 mr-2"
+    >
+      <option value="0">Falla</option>
+      <option value="1">Asiste</option>
+      <option value="2">Retardo</option>
+      <option value="3">Evacion</option>
+      <option value="4">Falla Justificada</option>
+    </select>
+    <button
+      onClick={handleUpdatestudent}
+      className="bg-yellow-500 text-white px-4 py-2 rounded"
+    >
+      Actualizar
+    </button>
+  </div>
+)}
+
           {confirmDelete && (
             <div className="mb-4">
               <p className="text-lg font-semibold mb-2">¿Está seguro de eliminar el curso {selectedCourse}?</p>
@@ -522,7 +576,7 @@ const Cursos = () => {
                     <td className="px-5 py-5 border-b border-gray-200 text-sm font-family: ui-serif, Georgia, Cambria, Times New Roman Times, serif">{student.Nombres}</td>
                     <td className="px-5 py-5 border-b border-gray-200 text-sm font-family: ui-serif, Georgia, Cambria, Times New Roman Times, serif">{student.Registro}</td>
                      <td className="px-5 py-5 border-b border-gray-200 text-sm font-family: ui-serif, Georgia, Cambria, Times New Roman Times, serif">                    <button
-              onClick={() => handleEditCourseClick([student.Documento])}
+              onClick={() => handleEditstudentClick(student)}
               className="text-yellow-500 hover:text-yellow-700 mr-2"
             >
               <FaEdit />
