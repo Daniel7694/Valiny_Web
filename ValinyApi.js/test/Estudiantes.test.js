@@ -79,9 +79,7 @@ describe('API Tests', function() {
         expect(res.statusCode).to.equal(201);
         expect(res.body).to.be.an('object');
         expect(res.body.success).to.be.true;
-       /* if (res.body.data && typeof res.body.data === 'object') {
-          expect(res.body.data.ID_Estudiante.toString()).to.equal(newStudent.ID_Estudiante.toString());
-        } */
+
         done();
       });
   });
