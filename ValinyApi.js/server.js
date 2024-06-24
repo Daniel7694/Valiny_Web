@@ -42,7 +42,7 @@ app.use((err, req, res, next) => {
 });
 
 if (require.main === module) {
- app.listen(port, '192.168.2.108' || 'localhost', () => {
+ app.listen(port, '0.0.0.0' || 'localhost', () => {
    console.log('Aplicación de NodeJS ' + process.pid + ' inició en el puerto ' + port);
  });
 }
