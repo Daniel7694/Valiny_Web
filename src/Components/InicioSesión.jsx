@@ -1,4 +1,5 @@
 import React, { useState, useContext } from 'react';
+import PropTypes from 'prop-types'; // Importa PropTypes
 import { useNavigate } from 'react-router-dom';
 import { UserContext } from '../App'; // Importa el contexto
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -29,31 +30,31 @@ function Inicio({ setToken }) {
 
     // Realizar la solicitud a la API
     fetch('http://192.168.2.108:3000/api/administradores/authenticate', options)
-    .then((response) => response.json())
-    .then((data) => {
-      // Aquí puedes manejar la respuesta de la API
-      if (data.success) {
-        // Guardar el token en el almacenamiento local
-        localStorage.setItem('token', data.token);
-        // Actualizar el estado de la aplicación con el nuevo token
-        setToken(data.token);
+      .then((response) => response.json())
+      .then((data) => {
+        // Aquí puedes manejar la respuesta de la API
+        if (data.success) {
+          // Guardar el token en el almacenamiento local
+          localStorage.setItem('token', data.token);
+          // Actualizar el estado de la aplicación con el nuevo token
+          setToken(data.token);
 
-        // Actualizar los datos del usuario
-        setUserData({
-          ID_Admin: usuario,
-          password: contraseña,
-        });
+          // Actualizar los datos del usuario
+          setUserData({
+            ID_Admin: usuario,
+            password: contraseña,
+          });
 
-        // Redirigir al usuario a la página de registros
-        navigate('/Menu');
-      } else if (data.message) {
-        alert(data.message);
-      }
-    })
-    .catch((error) => {
-      // Aquí puedes manejar cualquier error que ocurra durante la solicitud
-      console.error('Error:', error);
-    });
+          // Redirigir al usuario a la página de registros
+          navigate('/Menu');
+        } else if (data.message) {
+          alert(data.message);
+        }
+      })
+      .catch((error) => {
+        // Aquí puedes manejar cualquier error que ocurra durante la solicitud
+        console.error('Error:', error);
+      });
   };
 
   return (
@@ -62,7 +63,7 @@ function Inicio({ setToken }) {
         <img className='w-32 h-32 mb-4 mx-auto' src="/logonegro.png" alt="" />
         <h2 className="text-2xl text-center font-semibold mb-4">DEVIU SYSTEM</h2>
         <img src="./Valiny.jpg" alt="" />
-        <h2 className="text-2xl font-semibold mb-4">¡Bienvenido</h2>
+        <h2 className="text-2xl font-semibold mb-4">¡Bienvenido!</h2>
         <h3 className="text-lg font-semibold mb-4">Es un gusto tenerte de vuelta!</h3>
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
@@ -114,5 +115,9 @@ function Inicio({ setToken }) {
     </div>
   );
 }
+
+Inicio.propTypes = {
+  setToken: PropTypes.func.isRequired, // Define el prop type
+};
 
 export default Inicio;

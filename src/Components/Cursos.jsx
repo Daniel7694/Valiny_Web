@@ -25,7 +25,7 @@ const Cursos = () => {
   const [editCourseNumber, setEditCourseNumber] = useState('');
   const [editstudentNumber, setEditstudentNumber] = useState('');
   const [courseToEdit, setCourseToEdit] = useState(null);
-  const [studentToEdit, setstudentToEdit] = useState(null);
+  const [studentToEdit, setStudentToEdit] = useState(null);
   const [confirmDelete, setConfirmDelete] = useState(false);
 
   // Estado para la creación de estudiantes
@@ -183,9 +183,9 @@ const Cursos = () => {
 
   const handleEditstudentClick = (student) => {
     if (studentToEdit && studentToEdit.Documento === student.Documento) {
-      setstudentToEdit(null);
+      setStudentToEdit(null);
     } else {
-      setstudentToEdit(student);
+      setStudentToEdit(student);
       setEditstudentNumber(student.Documento);
     }
     setShowCreateStudent(false);
@@ -199,7 +199,7 @@ const Cursos = () => {
       console.log('Estudiante actualizado:', response.data);
       setMessage('Estudiante actualizado correctamente');
       setStudents(students.map(student => (student.Documento === studentToEdit.Documento ? updatedstudentData : student)));
-      setstudentToEdit(null);
+      setStudentToEdit(null);
       setEditstudentNumber('');
       setTimeout(() => setMessage(''), 5000);
     } catch (error) {
@@ -345,14 +345,14 @@ const Cursos = () => {
             </button>
             </>)}
             {admin && admin.Rol === 'SuperAdmin' && (
-            <>
+          
             <button
               onClick={handleCreateStudentClick}
               className="bg-green-500 text-white px-4 py-2 rounded"
             >
               Crear nuevo estudiante
             </button>
-            </>)}
+            )}
           </div>
           {showCreateCourse && (
             <div className="mb-4">
