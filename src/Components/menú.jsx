@@ -18,7 +18,7 @@ console.log(userData.ID_Admin);
 useEffect(() => {
   const fetchData = async () => {
     try {
-      const response = await axios.get(`http://192.168.2.108:3000/api/administradores/${userData.ID_Admin}`);
+      const response = await axios.get(`http://192.168.2.103:3000/api/administradores/${userData.ID_Admin}`);
       setAdmin(response.data.data);
 
     } catch (error) {

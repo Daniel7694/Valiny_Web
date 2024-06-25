@@ -3,7 +3,7 @@
  * @returns { Promise<void> }
  */
 exports.up = function(knex) {
-    return knex.schema.createTable('Administradores', function(table) {
+    return knex.schema.createTable('administradores', function(table) {
       table.integer('ID_Admin').primary();
       table.integer('Rol').notNullable().references('ID_Rol').inTable('Rol');
       table.integer('Clave').unsigned().notNullable().references('ID_Clave').inTable('Clave');
