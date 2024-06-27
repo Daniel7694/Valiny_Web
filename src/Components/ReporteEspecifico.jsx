@@ -26,7 +26,7 @@ const ReporteEspecifico = ({ setToken }) => {
   useEffect(() => {
     const cargarEstudiantes = async () => {
       try {
-        const response = await axios.get("http://192.168.2.103:3000/api/estudiantes");
+        const response = await axios.get("http://192.168.101.79:3000/api/estudiantes");
         console.log("Datos de estudiantes:", response.data);
         setEstudiantes(response.data.data);
       } catch (error) {
@@ -41,7 +41,7 @@ const ReporteEspecifico = ({ setToken }) => {
   useEffect(() => {
     const fetchAdmin = async () => {
       try {
-        const response = await axios.get(`http://192.168.2.103:3000/api/administradores/${userData.ID_Admin}`);
+        const response = await axios.get(`http://192.168.101.79:3000/api/administradores/${userData.ID_Admin}`);
         setAdmin(response.data.data);
         console.log("Datos del admin:", response.data.data);
       } catch (error) {

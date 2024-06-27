@@ -42,7 +42,7 @@ const Reportes = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('http://192.168.2.103:3000/api/porcentajes/porcentaje_registros');
+        const response = await axios.get('http://192.168.101.79:3000/api/porcentajes/porcentaje_registros');
         setStudents(response.data.data);
         renderBarChart(response.data.data);
         renderDonutChart(response.data.data);
@@ -57,18 +57,16 @@ const Reportes = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`http://192.168.2.103:3000/api/administradores/${userData.adminId}`);
+        const response = await axios.get(`http://192.168.101.79:3000/api/administradores/${userData.ID_Admin}`);
         setAdmin(response.data.data);
+  
       } catch (error) {
         console.error('Error fetching data: ', error);
       }
     };
   
-    if (userData.adminId) {
       fetchData();
-    }
-  }, [userData.adminId]);
-  
+    }, [userData]);
 
     const handleEspecificos = () => {
       navigate('/ReporteEspecifico');
@@ -135,7 +133,7 @@ const Reportes = () => {
       .attr('y', d => y(d.value))
       .attr('height', d => y(0) - y(d.value))
       .attr('width', x.bandwidth())
-      .attr('fill', '#3182ce'); // Color de las barras
+      .attr('fill', (d, i) => ['#3182ce', '#90cdf4', '#63b3ed', '#4299e1', '#2b6cb0'][i]); // Color de las barras
 
     barSvg.append('g')
       .attr('transform', `translate(0,${barHeight - barMargin.bottom})`)

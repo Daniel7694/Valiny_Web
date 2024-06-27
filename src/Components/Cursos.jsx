@@ -25,7 +25,7 @@ const Cursos = () => {
   const [editCourseNumber, setEditCourseNumber] = useState('');
   const [editstudentNumber, setEditstudentNumber] = useState('');
   const [courseToEdit, setCourseToEdit] = useState(null);
-  const [studentToEdit, setStudentToEdit] = useState(null);
+  const [studentToEdit, setstudentToEdit] = useState(null);
   const [confirmDelete, setConfirmDelete] = useState(false);
 
   // Estado para la creación de estudiantes
@@ -58,7 +58,7 @@ const Cursos = () => {
   useEffect(() => {
     const fetchStudents = async () => {
       try {
-        const response = await axios.get('http://192.168.2.103:3000/api/estudiantes');
+        const response = await axios.get('http://192.168.101.79:3000/api/estudiantes');
         setStudents(response.data.data);
       } catch (error) {
         console.error('Error fetching data: ', error);
@@ -71,7 +71,7 @@ const Cursos = () => {
   useEffect(() => {
     const fetchAdmin = async () => {
       try {
-        const response = await axios.get(`http://192.168.2.103:3000/api/administradores/${userData.ID_Admin}`);
+        const response = await axios.get(`http://192.168.101.79:3000/api/administradores/${userData.ID_Admin}`);
         setAdmin(response.data.data);
 
       } catch (error) {
@@ -92,7 +92,7 @@ const Cursos = () => {
   useEffect(() => {
     const fetchCourses = async () => {
       try {
-        const response = await axios.get('http://192.168.2.103:3000/api/cursos');
+        const response = await axios.get('http://192.168.101.79:3000/api/cursos');
         const sortedCourses = response.data.data.sort((a, b) => a.Num_Curso - b.Num_Curso);
         setCourses(sortedCourses);
         console.log('Sorted Courses:', sortedCourses);
@@ -138,7 +138,7 @@ const Cursos = () => {
     const courseData = { Num_Curso: newCourseNumber };
 
     try {
-      const response = await axios.post('http://192.168.2.103:3000/api/cursos/create', courseData);
+      const response = await axios.post('http://192.168.101.79:3000/api/cursos/create', courseData);
       console.log('Curso creado:', response.data);
       setMessage('Curso creado correctamente');
       setCourses([...courses, courseData]);
@@ -166,7 +166,7 @@ const Cursos = () => {
     const updatedCourseData = { ID_Curso: editCourseNumber };
 
     try {
-      const response = await axios.put(`http://192.168.2.103:3000/api/cursos/${courseToEdit.ID_Curso}`, updatedCourseData);
+      const response = await axios.put(`http://192.168.101.79:3000/api/cursos/${courseToEdit.ID_Curso}`, updatedCourseData);
       console.log('Curso actualizado:', response.data);
       setMessage('Curso actualizado correctamente');
       setCourses(courses.map(course => (course.ID_Curso === courseToEdit.ID_Curso ? updatedCourseData : course)));
@@ -183,9 +183,9 @@ const Cursos = () => {
 
   const handleEditstudentClick = (student) => {
     if (studentToEdit && studentToEdit.Documento === student.Documento) {
-      setStudentToEdit(null);
+      setstudentToEdit(null);
     } else {
-      setStudentToEdit(student);
+      setstudentToEdit(student);
       setEditstudentNumber(student.Documento);
     }
     setShowCreateStudent(false);
@@ -195,11 +195,11 @@ const Cursos = () => {
     const updatedstudentData = { Registro: editstudentNumber };
 
     try {
-      const response = await axios.put(`http://192.168.2.103:3000/api/estudiantes/${studentToEdit.Documento}`, updatedstudentData);
+      const response = await axios.put(`http://192.168.101.79:3000/api/estudiantes/${studentToEdit.Documento}`, updatedstudentData);
       console.log('Estudiante actualizado:', response.data);
       setMessage('Estudiante actualizado correctamente');
       setStudents(students.map(student => (student.Documento === studentToEdit.Documento ? updatedstudentData : student)));
-      setStudentToEdit(null);
+      setstudentToEdit(null);
       setEditstudentNumber('');
       setTimeout(() => setMessage(''), 5000);
     } catch (error) {
@@ -215,7 +215,7 @@ const Cursos = () => {
 
   const handleDeleteCourse = async (courseNum) => {
     try {
-      await axios.delete(`http://192.168.2.103:3000/api/cursos/${courseNum}`);
+      await axios.delete(`http://192.168.101.79:3000/api/cursos/${courseNum}`);
       console.log('Curso eliminado:', courseNum);
       setMessage('Curso eliminado correctamente');
       setCourses(courses.filter(course => course.Num_Curso !== courseNum));
@@ -257,7 +257,7 @@ const Cursos = () => {
     };
   
     try {
-      const response = await axios.post('http://192.168.2.103:3000/api/estudiantes/create', newStudentData);
+      const response = await axios.post('http://192.168.101.79:3000/api/estudiantes/create', newStudentData);
       console.log('Estudiante creado:', response.data);
       setMessage('Estudiante creado correctamente');
       setStudents([...students, response.data.data]); // Asegúrate de agregar la respuesta del servidor, no `newStudent`
@@ -325,34 +325,29 @@ const Cursos = () => {
 
             {admin && admin.Rol === 'SuperAdmin' && (
             <>
-            <button
-              onClick={handleCreateCourseClick}
-              className="bg-blue-500 text-white px-4 py-2 rounded"
-            >
-              Crear nuevo curso
-            </button>
-            <button
-              onClick={() => handleEditCourseClick({ Num_Curso: selectedCourse })}
-              className="text-yellow-500 hover:text-yellow-700 mr-2"
-            >
-              <FaEdit />
-            </button>
+           
             <button
               onClick={handleDeleteCourseClick}
               className="text-red-500 hover:text-red-700"
             >
               <FaTrash />
             </button>
+            <button
+              onClick={handleCreateCourseClick}
+              className="bg-blue-500 text-white px-4 py-2 rounded"
+            >
+              Crear nuevo curso
+            </button>
             </>)}
             {admin && admin.Rol === 'SuperAdmin' && (
-          
+            <>
             <button
               onClick={handleCreateStudentClick}
               className="bg-green-500 text-white px-4 py-2 rounded"
             >
               Crear nuevo estudiante
             </button>
-            )}
+            </>)}
           </div>
           {showCreateCourse && (
             <div className="mb-4">
@@ -434,113 +429,131 @@ const Cursos = () => {
             </div>
           )}
           {showCreateStudent && (
-            <div className="mb-4">
-              <div className="flex mb-2">
-    <label htmlFor="ID_Estudiante" className="text-lg font-semibold mr-2">Documento:</label>
-    <input
-      id="ID_Estudiante"
-      name="ID_Estudiante"
-      type="text"
-      value={newStudent.ID_Estudiante}
-      onChange={handleCreateStudentChange}
-      className="border border-gray-300 rounded px-2 py-1 mr-2"
-    />
-  </div>
-  <div className="flex mb-2">
-              <label htmlFor="P_Nombre" className="text-lg font-semibold mb-2 mr-2">Primer Nombre:</label>
+            <div className="mb-4 flex flex-wrap">
+            <div className="w-full md:w-1/2 lg:w-1/3 mb-2 md:mb-0">
+              <label htmlFor="ID_Estudiante" className="text-lg font-semibold mr-2">
+                Documento:
+              </label>
+              <input
+                id="ID_Estudiante"
+                name="ID_Estudiante"
+                type="text"
+                value={newStudent.ID_Estudiante}
+                onChange={handleCreateStudentChange}
+                className="border border-gray-300 rounded px-2 py-1 w-full"
+              />
+            </div>
+            <div className="w-full md:w-1/2 lg:w-1/3 mb-2 md:mb-0">
+              <label htmlFor="P_Nombre" className="text-lg font-semibold mb-2 mr-2">
+                Primer Nombre:
+              </label>
               <input
                 id="P_Nombre"
                 name="P_Nombre"
                 type="text"
                 value={newStudent.P_Nombre}
                 onChange={handleCreateStudentChange}
-                className="border border-gray-300 rounded px-2 py-1 mr-2"
+                className="border border-gray-300 rounded px-2 py-1 w-full"
               />
-  </div>
-  <div className="flex mb-2">
-              <label htmlFor="S_Nombre" className="text-lg font-semibold mb-2 mr-2">Segundo Nombre:</label>
+            </div>
+            <div className="w-full md:w-1/2 lg:w-1/3 mb-2 md:mb-0">
+              <label htmlFor="S_Nombre" className="text-lg font-semibold mb-2 mr-2">
+                Segundo Nombre:
+              </label>
               <input
                 id="S_Nombre"
                 name="S_Nombre"
                 type="text"
                 value={newStudent.S_Nombre}
                 onChange={handleCreateStudentChange}
-                className="border border-gray-300 rounded px-2 py-1 mr-2"
+                className="border border-gray-300 rounded px-2 py-1 w-full"
               />
-                </div>
-                <div className="flex mb-2">
-              <label htmlFor="T_Nombre" className="text-lg font-semibold mb-2 mr-2">Tercer Nombre:</label>
+            </div>
+            <div className="w-full md:w-1/2 lg:w-1/3 mb-2 md:mb-0">
+              <label htmlFor="T_Nombre" className="text-lg font-semibold mb-2 mr-2">
+                Tercer Nombre:
+              </label>
               <input
                 id="T_Nombre"
                 name="T_Nombre"
                 type="text"
                 value={newStudent.T_Nombre}
                 onChange={handleCreateStudentChange}
-                className="border border-gray-300 rounded px-2 py-1 mr-2"
+                className="border border-gray-300 rounded px-2 py-1 w-full"
               />
-                              </div>
-                              <div className="flex mb-2">           
-              <label htmlFor="P_Apellido" className="text-lg font-semibold mb-2 mr-2">Primer Apellido:</label>
+            </div>
+            <div className="w-full md:w-1/2 lg:w-1/3 mb-2 md:mb-0">
+              <label htmlFor="P_Apellido" className="text-lg font-semibold mb-2 mr-2">
+                Primer Apellido:
+              </label>
               <input
                 id="P_Apellido"
                 name="P_Apellido"
                 type="text"
                 value={newStudent.P_Apellido}
                 onChange={handleCreateStudentChange}
-                className="border border-gray-300 rounded px-2 py-1 mr-2"
+                className="border border-gray-300 rounded px-2 py-1 w-full"
               />
-                                            </div>
-                                            <div className="flex mb-2">     
-              <label htmlFor="S_Apellido" className="text-lg font-semibold mb-2 mr-2">Segundo Apellido:</label>
+            </div>
+            <div className="w-full md:w-1/2 lg:w-1/3 mb-2 md:mb-0">
+              <label htmlFor="S_Apellido" className="text-lg font-semibold mb-2 mr-2">
+                Segundo Apellido:
+              </label>
               <input
                 id="S_Apellido"
                 name="S_Apellido"
                 type="text"
                 value={newStudent.S_Apellido}
                 onChange={handleCreateStudentChange}
-                className="border border-gray-300 rounded px-2 py-1 mr-2"
+                className="border border-gray-300 rounded px-2 py-1 w-full"
               />
-              </div>
-              <div className="flex mb-2">
-             <label htmlFor="Genero" className="text-lg font-semibold mb-2 ">Género:</label>
-             <select
-    id="Genero"
-    name="Genero"
-    value={newStudent.Genero}
-    onChange={handleCreateStudentChange}
-    className="border border-gray-300 rounded px-2 py-1 focus:outline-none focus:border-blue-500"
-  >
-                    <option value="">Seleccione</option>
-                    <option value="1">Masculino</option>
-                    <option value="2">Femenino</option>
+            </div>
+            <div className="w-full md:w-1/2 lg:w-1/3 mb-2 md:mb-0">
+              <label htmlFor="Genero" className="text-lg font-semibold mb-2 mr-2">
+                Género:
+              </label>
+              <select
+                id="Genero"
+                name="Genero"
+                value={newStudent.Genero}
+                onChange={handleCreateStudentChange}
+                className="border border-gray-300 rounded px-2 py-1 w-full focus:outline-none focus:border-blue-500"
+              >
+                <option value="">Seleccione</option>
+                <option value="1">Masculino</option>
+                <option value="2">Femenino</option>
               </select>
-              </div>
-              <div className="flex mb-2">
-              <label htmlFor="T_Documento" className="text-lg font-semibold mb-2">Tipo de Documento:</label>
+            </div>
+            <div className="w-full md:w-1/2 lg:w-1/3 mb-2 md:mb-0">
+              <label htmlFor="T_Documento" className="text-lg font-semibold mb-2 mr-2">
+                Tipo de Documento:
+              </label>
               <select
                 id="T_Documento"
                 name="T_Documento"
                 type="text"
                 value={newStudent.T_Documento}
                 onChange={handleCreateStudentChange}
-                className="border border-gray-300 rounded px-2 py-1 focus:outline-none focus:border-blue-500"
->
+                className="border border-gray-300 rounded px-2 py-1 w-full focus:outline-none focus:border-blue-500"
+              >
                 <option value="">Seleccione</option>
                 <option value="1">Cédula de Ciudadanía</option>
                 <option value="2">Tarjeta de Identidad</option>
                 <option value="3">Cédula de Extranjería</option>
                 <option value="4">Registro Civil de Nacimiento</option>
               </select>
-              </div>
-              
-
-              <button
-                onClick={handleCreateStudent}
-                className="bg-green-500 text-white px-4 py-2 rounded"
+            </div>
+            <button
+            onClick={handleCreateStudent}
+                className="bg-green-500 text-white px-4 py-2 rounded mt-7 flex items-center justify-center"
+                style={{ height: '35px' }} // Modificar la altura del botón si es necesario
               >
                 Confirmar
-              </button>
+          </button>
+            <div className="w-full">
+             
             </div>
+          </div>
           )}
           {message && (
             <div className="mb-4 text-green-500">

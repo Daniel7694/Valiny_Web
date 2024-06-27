@@ -36,7 +36,7 @@ function Registro() {
     // Llamada a la API para obtener los cursos
     const fetchCursos = async () => {
       try {
-        const response = await fetch('http://192.168.2.103:3000/api/cursos');
+        const response = await fetch('http://192.168.101.79:3000/api/cursos');
         if (!response.ok) {
           throw new Error('Error al obtener los cursos');
         }
@@ -59,7 +59,7 @@ function Registro() {
   };
 
   const createClave = async (clave) => {
-    const response = await fetch('http://192.168.2.103:3000/api/clave/create', {
+    const response = await fetch('http://192.168.101.79:3000/api/clave/create', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ Contrasenia: clave }),
@@ -76,7 +76,7 @@ function Registro() {
   };
 
   const createAdministrador = async (administrador) => {
-    const response = await fetch('http://192.168.2.103:3000/api/administradores/create', {
+    const response = await fetch('http://192.168.101.79:3000/api/administradores/create', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(administrador),
